@@ -44,9 +44,28 @@ class Visual {
     constructor(options) {
         this.target = options.element;
         this.target.innerHTML = `
+            <style>
+                #slicer-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                }
+                #date-inputs {
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 10px;
+                }
+                #date-inputs input {
+                    margin: 0 5px;
+                }
+            </style>
             <div id="slicer-container">
-                <input type="date" id="startDate" />
-                <input type="date" id="endDate" />
+                <div id="date-inputs">
+                    <input type="date" id="startDate" />
+                    <input type="date" id="endDate" />
+                </div>
                 <select id="relativeDate">
                     <option value="thisWeek">This Week</option>
                     <option value="last7Days">Last 7 Days</option>
@@ -92,15 +111,24 @@ class Visual {
         }
         const dataView = options.dataViews[0];
         const categories = dataView.categorical.categories[0];
-        const dateValues = categories.values.map(value => new Date(value));
-        const dateTimestamps = dateValues.map(value => value.getTime());
-        const minDate = new Date(Math.min(...dateTimestamps));
-        const maxDate = new Date(Math.max(...dateTimestamps));
-        this.startDateInput.value = minDate.toISOString().split('T')[0];
-        this.endDateInput.value = maxDate.toISOString().split('T')[0];
-        this.dateRangeSlider.min = minDate.getTime().toString();
-        this.dateRangeSlider.max = maxDate.getTime().toString();
-        this.dateRangeSlider.value = maxDate.getTime().toString();
+        if (categories && categories.values && categories.values.length > 0) {
+            const dateValues = categories.values
+                .map(value => new Date(value))
+                .filter(date => !isNaN(date.getTime()));
+            if (dateValues.length > 0) {
+                const dateTimestamps = dateValues.map(value => value.getTime());
+                const minDate = new Date(Math.min(...dateTimestamps));
+                const maxDate = new Date(Math.max(...dateTimestamps));
+                this.startDateInput.value = minDate.toISOString().split('T')[0];
+                this.endDateInput.value = maxDate.toISOString().split('T')[0];
+            }
+            else {
+                this.setDefaultDates();
+            }
+        }
+        else {
+            this.setDefaultDates();
+        }
         const settings = dataView.metadata.objects || {};
         const slicerContainer = document.getElementById("slicer-container");
         const getColor = (fill) => (fill && fill.solid ? fill.solid.color : null);
@@ -166,6 +194,11 @@ class Visual {
         this.startDateInput.value = startDate.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
         this.updateDateRange();
+    }
+    setDefaultDates() {
+        const today = new Date();
+        this.startDateInput.value = today.toISOString().split('T')[0];
+        this.endDateInput.value = today.toISOString().split('T')[0];
     }
 }
 

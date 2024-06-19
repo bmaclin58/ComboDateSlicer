@@ -41,9 +41,28 @@ export class Visual implements IVisual {
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
         this.target.innerHTML = `
+            <style>
+                #slicer-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                }
+                #date-inputs {
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 10px;
+                }
+                #date-inputs input {
+                    margin: 0 5px;
+                }
+            </style>
             <div id="slicer-container">
-                <input type="date" id="startDate" />
-                <input type="date" id="endDate" />
+                <div id="date-inputs">
+                    <input type="date" id="startDate" />
+                    <input type="date" id="endDate" />
+                </div>
                 <select id="relativeDate">
                     <option value="thisWeek">This Week</option>
                     <option value="last7Days">Last 7 Days</option>
@@ -54,13 +73,15 @@ export class Visual implements IVisual {
                 </select>
             </div>
         `;
-
+    
         this.startDateInput = document.getElementById("startDate") as HTMLInputElement;
         this.endDateInput = document.getElementById("endDate") as HTMLInputElement;
         this.relativeDateSelect = document.getElementById("relativeDate") as HTMLSelectElement;
+    
         this.startDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.endDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.relativeDateSelect.addEventListener("change", this.updateRelativeDate.bind(this));
+    
 
         /*
         Throwing out the slider.  I don't think it's necessary or helpful. But ill keep the code here in case we want it back.
@@ -90,30 +111,38 @@ export class Visual implements IVisual {
         if (!options || !options.dataViews || options.dataViews.length === 0) {
             return;
         }
-
+    
         const dataView = options.dataViews[0];
         const categories = dataView.categorical.categories[0];
-        const dateValues = categories.values.map(value => new Date(value as string));
-        const dateTimestamps = dateValues.map(value => value.getTime());
-        const minDate = new Date(Math.min(...dateTimestamps));
-        const maxDate = new Date(Math.max(...dateTimestamps));
-
-        this.startDateInput.value = minDate.toISOString().split('T')[0];
-        this.endDateInput.value = maxDate.toISOString().split('T')[0];
-        this.dateRangeSlider.min = minDate.getTime().toString();
-        this.dateRangeSlider.max = maxDate.getTime().toString();
-        this.dateRangeSlider.value = maxDate.getTime().toString();
-
+    
+        if (categories && categories.values && categories.values.length > 0) {
+            const dateValues = categories.values
+                .map(value => new Date(value as string))
+                .filter(date => !isNaN(date.getTime()));
+    
+            if (dateValues.length > 0) {
+                const dateTimestamps = dateValues.map(value => value.getTime());
+                const minDate = new Date(Math.min(...dateTimestamps));
+                const maxDate = new Date(Math.max(...dateTimestamps));
+    
+                this.startDateInput.value = minDate.toISOString().split('T')[0];
+                this.endDateInput.value = maxDate.toISOString().split('T')[0];
+            } else {
+                this.setDefaultDates();
+            }
+        } else {
+            this.setDefaultDates();
+        }
         const settings = dataView.metadata.objects || {};
         const slicerContainer = document.getElementById("slicer-container");
-
+    
         const getColor = (fill: powerbi.Fill) => (fill && fill.solid ? fill.solid.color : null);
-
+    
         const textColor = settings.general && settings.general.textColor ? getColor(settings.general.textColor as powerbi.Fill) : null;
         const fontSize = settings.general && settings.general.fontSize ? `${settings.general.fontSize}px` : null;
         const backgroundColor = settings.general && settings.general.backgroundColor ? getColor(settings.general.backgroundColor as powerbi.Fill) : null;
-        const transparency = settings.general && settings.general.transparency && typeof settings.general.transparency === "number"? settings.general.transparency : 0;
-
+        const transparency = settings.general && settings.general.transparency && typeof settings.general.transparency === "number" ? settings.general.transparency : 0;
+    
         if (textColor) {
             this.startDateInput.style.color = textColor;
             this.endDateInput.style.color = textColor;
@@ -179,6 +208,12 @@ export class Visual implements IVisual {
         this.endDateInput.value = today.toISOString().split('T')[0];
 
         this.updateDateRange();
+    }
+    
+    private setDefaultDates() {
+        const today = new Date();
+        this.startDateInput.value = today.toISOString().split('T')[0];
+        this.endDateInput.value = today.toISOString().split('T')[0];
     }
 
     

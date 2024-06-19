@@ -12,4 +12,5 @@ export declare class Visual implements IVisual {
     update(options: VisualUpdateOptions): void;
     private updateDateRange;
     private updateRelativeDate;
+    private setDefaultDates;
 }
