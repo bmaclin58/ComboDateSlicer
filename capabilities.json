@@ -1,0 +1,120 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Date Slicer 2.0",
+            "name": "date",
+            "kind": "Grouping"
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "categorical": {
+                "categories": {
+                    "for": {
+                        "in": "date"
+                    },
+                    "dataReductionAlgorithm": {
+                        "top": {}
+                    }
+                },
+                "values": {
+                    "select": [
+                        {
+                            "bind": {
+                                "to": "measure"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "objects": {
+        "general": {
+            "displayName": "General",
+            "properties": {
+                "startColor": {
+                    "displayName": "Start Date Color",
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "endColor": {
+                    "displayName": "End Date Color",
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "relativeColor": {
+                    "displayName": "Relative Date Color",
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "backgroundColor": {
+                    "displayName": "Background Color",
+                    "type": { "fill": { "solid": { "color": true } } }
+                }
+            }
+        },
+        "configuration": {
+      "displayName": "Configuration",
+      "properties": {
+        "enablePinning": {
+          "displayName": "Enable pinning",
+          "description": "Whether to allow pinning selections as bookmarks",
+          "type": {
+            "bool": true
+          }
+        },
+        "showRelated": {
+          "displayName": "Show Related",
+          "description": "Whether to show related nodes on selection",
+          "type": {
+            "bool": true
+          }
+        },
+        "wrapText": {
+          "displayName": "Wrap Text",
+          "description": "Whether to wrap text or truncate",
+          "type": {
+            "bool": true
+          }
+        },
+        "fontSize": {
+          "displayName": "Text Size",
+          "description": "The size of text throughout the visual",
+          "type": {
+            "formatting": {
+              "fontSize": true
+            }
+          }
+        },
+        "fontColor": {
+          "displayName": "Text Color",
+          "description": "The color of text throughout the visual",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        },
+        
+        "transparency": {
+          "type": {
+            "numeric": true
+          }
+        },
+        "backgroundColor": {
+          "displayName": "Background Color",
+          "description": "The background color of the visual",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        }
+    }
+    }
+},
+
+    "privileges": []
+}
