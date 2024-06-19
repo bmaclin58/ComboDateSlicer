@@ -6,6 +6,25 @@ p em {
   background: yellow;
   padding: 5px;
 }
+#slicer-container {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+}
+#slicer-container input[type="date"] {
+  margin-right: 5px;
+  color: #000000;
+}
+#slicer-container #slider-container {
+  margin-top: 10px;
+}
+#slicer-container #slider-container input[type="range"] {
+  width: 100%;
+}
+#slicer-container select {
+  margin-top: 10px;
+  color: #000000;
+}
 
 
 /*# sourceMappingURL=https://localhost:8080/assets/visual.css.map*/

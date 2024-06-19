@@ -33,51 +33,55 @@ import FormattingSettingsSlice = formattingSettings.Slice;
 import FormattingSettingsModel = formattingSettings.Model;
 
 /**
- * Data Point Formatting Card
+ * Text Formatting Card
  */
-class DataPointCardSettings extends FormattingSettingsCard {
-    defaultColor = new formattingSettings.ColorPicker({
-        name: "defaultColor",
-        displayName: "Default color",
-        value: { value: "" }
-    });
-
-    showAllDataPoints = new formattingSettings.ToggleSwitch({
-        name: "showAllDataPoints",
-        displayName: "Show all",
-        value: true
-    });
-
-    fill = new formattingSettings.ColorPicker({
-        name: "fill",
-        displayName: "Fill",
-        value: { value: "" }
-    });
-
-    fillRule = new formattingSettings.ColorPicker({
-        name: "fillRule",
-        displayName: "Color saturation",
-        value: { value: "" }
-    });
-
+class TextFormattingCardSettings extends FormattingSettingsCard {
     fontSize = new formattingSettings.NumUpDown({
         name: "fontSize",
-        displayName: "Text Size",
+        displayName: "Font Size",
         value: 12
     });
 
-    name: string = "dataPoint";
-    displayName: string = "Data colors";
-    slices: Array<FormattingSettingsSlice> = [this.defaultColor, this.showAllDataPoints, this.fill, this.fillRule, this.fontSize];
+    fontFamily = new formattingSettings.FontPicker({
+        name: "fontFamily",
+        displayName: "Font Family",
+        value: "Arial"
+    });
+
+    fontColor = new formattingSettings.ColorPicker({
+        name: "fontColor",
+        displayName: "Font Color",
+        value: { value: "#000000" }
+    });
+
+    name: string = "textFormatting";
+    displayName: string = "Text Formatting";
+    slices: Array<FormattingSettingsSlice> = [this.fontSize, this.fontFamily, this.fontColor];
 }
 
 /**
-* visual settings model class
+ * Background Formatting Card
+ */
+class BackgroundFormattingCardSettings extends FormattingSettingsCard {
+    backgroundColor = new formattingSettings.ColorPicker({
+        name: "backgroundColor",
+        displayName: "Background Color",
+        value: { value: "#FFFFFF" }
+    });
+
+    name: string = "backgroundFormatting";
+    displayName: string = "Background Formatting";
+    slices: Array<FormattingSettingsSlice> = [this.backgroundColor];
+}
+
+/**
+* Visual settings model class
 *
 */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     // Create formatting settings model formatting cards
-    dataPointCard = new DataPointCardSettings();
+    textFormattingCard = new TextFormattingCardSettings();
+    backgroundFormattingCard = new BackgroundFormattingCardSettings();
 
-    cards = [this.dataPointCard];
+    cards = [this.textFormattingCard, this.backgroundFormattingCard];
 }

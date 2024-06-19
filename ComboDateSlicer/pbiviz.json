@@ -1,0 +1,25 @@
+{
+    "visual": {
+        "name": "comboDateSlicer",
+        "displayName": "ComboDateSlicer",
+        "guid": "comboDateSlicer821CCC76721D44A48063DFEA0FA72849",
+        "visualClassName": "Visual",
+        "version": "1.0.0.0",
+        "description": "A visual combining a date slider and a relative date slicer",
+        "supportUrl": "",
+        "gitHubUrl": ""
+    },
+    "apiVersion": "5.3.0",
+    "author": {
+        "name": "",
+        "email": ""
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": [],
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}

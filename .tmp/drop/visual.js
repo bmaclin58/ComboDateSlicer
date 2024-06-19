@@ -35,11 +35,11 @@ var comboDateSlicer821CCC76721D44A48063DFEA0FA72849_DEBUG;
 *  THE SOFTWARE.
 */
 
+
 class Visual {
     target;
     startDateInput;
     endDateInput;
-    dateRangeSlider;
     relativeDateSelect;
     constructor(options) {
         this.target = options.element;
@@ -82,28 +82,6 @@ class Visual {
         this.startDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.endDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.relativeDateSelect.addEventListener("change", this.updateRelativeDate.bind(this));
-        /*
-        Throwing out the slider.  I don't think it's necessary or helpful. But ill keep the code here in case we want it back.
-        this.dateRangeSlider = document.getElementById("dateRangeSlider") as HTMLInputElement;
-                      <div id="slider-container">
-        <input type="range" id="dateRangeSlider" min="1" max="365" value="30" />
-        </div>
-        this.dateRangeSlider.addEventListener("input", this.updateSlider.bind(this));
-
-        private updateSlider() {
-        const sliderValue = parseInt(this.dateRangeSlider.value, 10);
-        const startDateTimestamp = parseInt(this.dateRangeSlider.min, 10);
-        const endDateTimestamp = parseInt(this.dateRangeSlider.max, 10);
-
-        const range = endDateTimestamp - startDateTimestamp;
-        const newEndDateTimestamp = startDateTimestamp + (range * (sliderValue / 100));
-        const newEndDate = new Date(newEndDateTimestamp);
-
-        this.endDateInput.value = newEndDate.toISOString().split('T')[0];
-        console.log(`Slider Value: ${sliderValue}`);
-        this.updateDateRange();
-    }
-        */
     }
     update(options) {
         if (!options || !options.dataViews || options.dataViews.length === 0) {
@@ -129,37 +107,15 @@ class Visual {
         else {
             this.setDefaultDates();
         }
-        const settings = dataView.metadata.objects || {};
-        const slicerContainer = document.getElementById("slicer-container");
-        const getColor = (fill) => (fill && fill.solid ? fill.solid.color : null);
-        const textColor = settings.general && settings.general.textColor ? getColor(settings.general.textColor) : null;
-        const fontSize = settings.general && settings.general.fontSize ? `${settings.general.fontSize}px` : null;
-        const backgroundColor = settings.general && settings.general.backgroundColor ? getColor(settings.general.backgroundColor) : null;
-        const transparency = settings.general && settings.general.transparency && typeof settings.general.transparency === "number" ? settings.general.transparency : 0;
-        if (textColor) {
-            this.startDateInput.style.color = textColor;
-            this.endDateInput.style.color = textColor;
-            this.relativeDateSelect.style.color = textColor;
-        }
-        if (fontSize) {
-            this.startDateInput.style.fontSize = fontSize;
-            this.endDateInput.style.fontSize = fontSize;
-            this.relativeDateSelect.style.fontSize = fontSize;
-        }
-        if (backgroundColor) {
-            slicerContainer.style.backgroundColor = backgroundColor;
-            slicerContainer.style.opacity = ((100 - transparency) / 100).toString();
-        }
+        this.updateStyles(dataView.metadata.objects);
     }
     updateDateRange() {
         const startDate = new Date(this.startDateInput.value);
         const endDate = new Date(this.endDateInput.value);
         if (endDate < startDate) {
-            // If the end date is before the start date, set the end date to the start date
             this.endDateInput.value = this.startDateInput.value;
         }
         console.log(`Date Range: ${this.startDateInput.value} - ${this.endDateInput.value}`);
-        // Update visual with new date range logic
     }
     updateRelativeDate() {
         const relativeDate = this.relativeDateSelect.value;
@@ -199,6 +155,32 @@ class Visual {
         const today = new Date();
         this.startDateInput.value = today.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
+    }
+    updateStyles(objects) {
+        const slicerContainer = document.getElementById("slicer-container");
+        const getColor = (fill) => (fill && fill.solid ? fill.solid.color : null);
+        const textColor = objects && objects["dateText"] && objects["dateText"]["fontColor"] ? getColor(objects["dateText"]["fontColor"]) : null;
+        const fontSize = objects && objects["dateText"] && objects["dateText"]["fontSize"] ? `${objects["dateText"]["fontSize"]}px` : null;
+        const fontFamily = objects && objects["dateText"] && objects["dateText"]["fontFamily"] ? objects["dateText"]["fontFamily"] : null;
+        const backgroundColor = objects && objects["background"] && objects["background"]["backgroundColor"] ? getColor(objects["background"]["backgroundColor"]) : null;
+        if (textColor) {
+            this.startDateInput.style.color = textColor;
+            this.endDateInput.style.color = textColor;
+            this.relativeDateSelect.style.color = textColor;
+        }
+        if (fontSize) {
+            this.startDateInput.style.fontSize = fontSize;
+            this.endDateInput.style.fontSize = fontSize;
+            this.relativeDateSelect.style.fontSize = fontSize;
+        }
+        if (fontFamily) {
+            this.startDateInput.style.fontFamily = fontFamily;
+            this.endDateInput.style.fontFamily = fontFamily;
+            this.relativeDateSelect.style.fontFamily = fontFamily;
+        }
+        if (backgroundColor) {
+            slicerContainer.style.backgroundColor = backgroundColor;
+        }
     }
 }
 
