@@ -18,6 +18,17 @@
       }
     ],
     "objects": {
+        "general": {
+            "displayName": "Filtering",
+            "displayNameKey": "filterGeneral",
+            "properties": {
+                "filter": {
+                    "type": {
+                        "filter": true
+                    }
+                }
+            }
+        },
       "textFormatting": {
         "displayName": "Text Formatting",
         "properties": {
@@ -62,6 +73,9 @@
           }
         }
       }
-    }
+    },
+    "supportsSynchronizingFilterState": true,
+    "privileges": [],
+    "supportsMultiVisualSelection": true
   }
   

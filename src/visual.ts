@@ -35,6 +35,7 @@ import DataViewObject = powerbi.DataViewObject;
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import { VisualFormattingSettingsModel } from "./settings";
 import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
+import { interactivitySelectionService } from "powerbi-visuals-utils-interactivityutils";
 
 import "./../style/visual.less";
 
