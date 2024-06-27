@@ -8,6 +8,8 @@ export declare class Visual implements IVisual {
     private startDateInput;
     private endDateInput;
     private relativeDateSelect;
+    private formattingSettings;
+    private formattingSettingsService;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;
     private updateDateRange;

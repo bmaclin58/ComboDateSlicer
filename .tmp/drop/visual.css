@@ -21,6 +21,12 @@ p em {
 #slicer-container #slider-container input[type="range"] {
   width: 100%;
 }
+#slicer-container #relativeDate {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 #slicer-container select {
   margin-top: 10px;
   color: #000000;

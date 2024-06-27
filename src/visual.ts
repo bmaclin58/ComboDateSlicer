@@ -83,8 +83,8 @@ export class Visual implements IVisual {
         }
 
         const dataView = options.dataViews[0];
-        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
-        
+        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, dataView);
+                
         const categories = dataView.categorical.categories[0];
 
         if (categories && categories.values && categories.values.length > 0) {

@@ -3,24 +3,32 @@ import FormattingSettingsCard = formattingSettings.SimpleCard;
 import FormattingSettingsSlice = formattingSettings.Slice;
 import FormattingSettingsModel = formattingSettings.Model;
 /**
- * Data Point Formatting Card
+ * Text Formatting Card
  */
-declare class DataPointCardSettings extends FormattingSettingsCard {
-    defaultColor: formattingSettings.ColorPicker;
-    showAllDataPoints: formattingSettings.ToggleSwitch;
-    fill: formattingSettings.ColorPicker;
-    fillRule: formattingSettings.ColorPicker;
+declare class TextFormattingCardSettings extends FormattingSettingsCard {
     fontSize: formattingSettings.NumUpDown;
+    fontFamily: formattingSettings.FontPicker;
+    fontColor: formattingSettings.ColorPicker;
     name: string;
     displayName: string;
     slices: Array<FormattingSettingsSlice>;
 }
 /**
-* visual settings model class
+ * Background Formatting Card
+ */
+declare class BackgroundFormattingCardSettings extends FormattingSettingsCard {
+    backgroundColor: formattingSettings.ColorPicker;
+    name: string;
+    displayName: string;
+    slices: Array<FormattingSettingsSlice>;
+}
+/**
+* Visual settings model class
 *
 */
 export declare class VisualFormattingSettingsModel extends FormattingSettingsModel {
-    dataPointCard: DataPointCardSettings;
-    cards: DataPointCardSettings[];
+    textFormattingCard: TextFormattingCardSettings;
+    backgroundFormattingCard: BackgroundFormattingCardSettings;
+    cards: (TextFormattingCardSettings | BackgroundFormattingCardSettings)[];
 }
 export {};
