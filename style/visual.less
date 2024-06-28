@@ -1,14 +1,13 @@
-@import (less) "node_modules/powerbi-visuals-utils-formattingutils";
+@import:'~/bootstrap/dist/css/bootstrap.min.css';
 
 @backgroundColor: #ffffff;
-@startColor: #000000;
-@relativeColor: #000000;
+
 
 p {
     font-size: 20px;
     font-weight: bold;
     em {
-        background: yellow;
+        
         padding: 5px;
     }
 }
@@ -17,22 +16,26 @@ p {
     background-color: @backgroundColor;
     padding: 10px;
     border-radius: 5px;
+    text-align: center;
+
 
     input[type="date"] {
         margin-right: 5px;
-        color: @startColor;
+       
     }
 
     #slider-container {
         margin-top: 10px;
+
 
         input[type="range"] {
             width: 100%;
         }
     }
 
+
     select {
         margin-top: 10px;
-        color: @relativeColor;
+       
     }
 }

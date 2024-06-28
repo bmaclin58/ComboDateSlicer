@@ -3,17 +3,16 @@ p {
   font-weight: bold;
 }
 p em {
-  background: yellow;
   padding: 5px;
 }
 #slicer-container {
   background-color: #ffffff;
   padding: 10px;
   border-radius: 5px;
+  text-align: center;
 }
 #slicer-container input[type="date"] {
   margin-right: 5px;
-  color: #000000;
 }
 #slicer-container #slider-container {
   margin-top: 10px;
@@ -23,7 +22,6 @@ p em {
 }
 #slicer-container select {
   margin-top: 10px;
-  color: #000000;
 }
 
 

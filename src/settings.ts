@@ -87,28 +87,28 @@ export class relativeDateFormattingCardSettings extends FormattingSettingsCard{
      */
         public fontFamily = new formattingSettings.FontPicker({
             name: "fontFamily",
-            displayName: "Date Font Family",
+            displayName: "Font Family",
             value: "Arial",
             visible: true
         });
     
         public fontSize = new formattingSettings.NumUpDown({ 
             name: "fontSize",
-            displayName: "Date Font Size",
+            displayName: "Font Size",
             value: 12,
             visible: true
         });    
             
         public fontColor = new formattingSettings.ColorPicker({
             name: "fontColor",
-            displayName: "Date Font Color",
+            displayName: "Font Color",
             value: { value: "#000000" },
             visible: true
         });
     
         public backgroundColor = new formattingSettings.ColorPicker({
             name: "backgroundColor",
-            displayName: "Date Background Color",
+            displayName: "Background Color",
             value: { value: "#FFFFFF" },
             visible: true
         });
