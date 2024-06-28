@@ -59,7 +59,7 @@ class TextFormattingCardSettings extends FormattingSettingsCard {
     slices: Array<FormattingSettingsSlice> = [this.fontSize, this.fontFamily, this.fontColor];
 }
 /**
- * Date 1 Formatting Card
+ * Date Formatting Card
  */
 class dateFormattingCard extends FormattingSettingsCard {
 
@@ -86,8 +86,8 @@ class dateFormattingCard extends FormattingSettingsCard {
             value: { value: "#FFFFFF" }
         });
 
-    name: string = "startDateFormatting";
-    displayName: string = "Start Date Formatting";
+    name: string = "dateFormatting";
+    displayName: string = "Date Formatting";
     slices: Array<FormattingSettingsSlice> = [
       this.fontSize, 
       this.fontFamily, 
@@ -123,8 +123,8 @@ class RelativeDateFormattingCardSettings extends FormattingSettingsCard {
             value: { value: "#FFFFFF" }
         });
 
-    name: string = "startDateFormatting";
-    displayName: string = "Start Date Formatting";
+    name: string = "relativeDateFormatting";
+    displayName: string = "Relative Date Formatting";
     slices: Array<FormattingSettingsSlice> = [
       this.fontSize, 
       this.fontFamily, 
