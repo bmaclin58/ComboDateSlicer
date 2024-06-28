@@ -25,7 +25,6 @@
 */
 "use strict";
 
-import * as d3 from "d3";
 import powerbi from "powerbi-visuals-api";
 import IVisual = powerbi.extensibility.visual.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
@@ -37,12 +36,14 @@ import { interactivitySelectionService } from "powerbi-visuals-utils-interactivi
 import "./../style/visual.less";
 
 export class Visual implements IVisual {
-    private target: HTMLElement;
-    private startDateInput: HTMLInputElement;
-    private endDateInput: HTMLInputElement;
-    private relativeDateSelect: HTMLSelectElement;
-    private formattingSettings: VisualFormattingSettingsModel;
-    private formattingSettingsService: FormattingSettingsService;
+    public target: HTMLElement;
+    public startDateInput: HTMLInputElement;
+    public endDateInput: HTMLInputElement;
+    public relativeDateSelect: HTMLSelectElement;
+    public formattingSettings: VisualFormattingSettingsModel;
+    public formattingSettingsService: FormattingSettingsService;
+
+    public dateInputs : HTMLInputElement;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -65,13 +66,16 @@ export class Visual implements IVisual {
             </div>
         `;
 
+        this.dateInputs = document.getElementById("date-inputs") as HTMLInputElement;
         this.startDateInput = document.getElementById("startDate") as HTMLInputElement;
         this.endDateInput = document.getElementById("endDate") as HTMLInputElement;
         this.relativeDateSelect = document.getElementById("relativeDate") as HTMLSelectElement;
+        
 
         this.startDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.endDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.relativeDateSelect.addEventListener("change", this.updateRelativeDate.bind(this));
+        
     }
 
     public update(options: VisualUpdateOptions) {
@@ -165,43 +169,28 @@ export class Visual implements IVisual {
         const slicerContainer = document.getElementById("slicer-container");
 
         // Start date input formatting
-        const startDateFontSize = `${this.formattingSettings.startDateFormattingCard.fontSize.value}px`;
-        const startDateFontFamily = this.formattingSettings.startDateFormattingCard.fontFamily.value;
-        const startDateColor = this.formattingSettings.startDateFormattingCard.fontColor.value.value;
-        const startDateBackgroundColor = this.formattingSettings.startDateFormattingCard.backgroundColor.value.value;
+        const dateFontSize = `${this.formattingSettings.dateFormattingCard.fontSize.value}px`;
+        const dateFontFamily = this.formattingSettings.dateFormattingCard.fontFamily.value;
+        const dateColor = this.formattingSettings.dateFormattingCard.fontColor.value.value;
+        const dateBackgroundColor = this.formattingSettings.dateFormattingCard.backgroundColor.value.value;
 
-        if (startDateColor) {
-            this.startDateInput.style.color = startDateColor;
+        if (dateColor) {
+            this.startDateInput.style.color = dateColor;
+            this.endDateInput.style.color = dateColor;
         }
-        if (startDateFontSize) {
-            this.startDateInput.style.fontSize = startDateFontSize;
+        if (dateFontSize) {
+            this.startDateInput.style.fontSize = dateFontSize;
+            this.endDateInput.style.fontSize = dateFontSize;
         }
-        if (startDateFontFamily) {
-            this.startDateInput.style.fontFamily = startDateFontFamily;
+        if (dateFontFamily) {
+            this.startDateInput.style.fontFamily = dateFontFamily;
+            this.endDateInput.style.fontFamily = dateFontFamily;
         }
-        if (startDateBackgroundColor) {
-            this.startDateInput.style.backgroundColor = startDateBackgroundColor;
+        if (dateBackgroundColor) {
+            this.startDateInput.style.backgroundColor = dateBackgroundColor;
+            this.endDateInput.style.backgroundColor = dateBackgroundColor;
         }
 
-        // End date input formatting 
-        const endDateFontSize = `${this.formattingSettings.endDateFormattingCard.fontSize.value}px`;
-        const endDateFontFamily = this.formattingSettings.endDateFormattingCard.fontFamily.value;
-        const endDateColor = this.formattingSettings.endDateFormattingCard.fontColor.value.value;
-        const endDateBackgroundColor = this.formattingSettings.endDateFormattingCard.backgroundColor.value.value;
-
-        if (endDateColor) {
-            this.endDateInput.style.color = endDateColor;
-        }
-        if (endDateFontSize) {
-            this.endDateInput.style.fontSize = endDateFontSize;
-        }
-        if (endDateFontFamily) {
-            this.endDateInput.style.fontFamily = endDateFontFamily;
-        }
-        if (endDateBackgroundColor) {
-            this.endDateInput.style.backgroundColor = endDateBackgroundColor;
-        }
-        
         // Relative date select formatting
         const relativeDateFontSize = `${this.formattingSettings.relativeDateFormattingCard.fontSize.value}px`;
         const relativeDateFontFamily = this.formattingSettings.relativeDateFormattingCard.fontFamily.value;

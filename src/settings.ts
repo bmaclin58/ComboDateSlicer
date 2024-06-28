@@ -61,44 +61,7 @@ class TextFormattingCardSettings extends FormattingSettingsCard {
 /**
  * Date 1 Formatting Card
  */
-class StartDateFormattingCardSettings extends FormattingSettingsCard {
-
-    fontSize = new formattingSettings.NumUpDown({ 
-        name: "fontSize",
-        displayName: "Font Size",
-        value: 12});
-
-    fontFamily = new formattingSettings.FontPicker({
-            name: "fontFamily",
-            displayName: "Font Family",
-            value: "Arial"
-        });
-
-    fontColor = new formattingSettings.ColorPicker({
-            name: "fontColor",
-            displayName: "Font Color",
-            value: { value: "#000000" }
-        });
-    
-    backgroundColor = new formattingSettings.ColorPicker({
-            name: "backgroundColor",
-            displayName: "Background Color",
-            value: { value: "#FFFFFF" }
-        });
-
-    name: string = "startDateFormatting";
-    displayName: string = "Start Date Formatting";
-    slices: Array<FormattingSettingsSlice> = [
-      this.fontSize, 
-      this.fontFamily, 
-      this.fontColor,
-      this.backgroundColor
-    ];
-}
-/**
- * Date 2 Formatting Card
- */
-class EndDateFormattingCardSettings extends FormattingSettingsCard {
+class dateFormattingCard extends FormattingSettingsCard {
 
     fontSize = new formattingSettings.NumUpDown({ 
         name: "fontSize",
@@ -193,15 +156,13 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     textFormattingCard = new TextFormattingCardSettings();
     backgroundFormattingCard = new BackgroundFormattingCardSettings();
 
-    startDateFormattingCard = new StartDateFormattingCardSettings();
-    endDateFormattingCard = new EndDateFormattingCardSettings();  
+    dateFormattingCard = new dateFormattingCard();
     relativeDateFormattingCard = new RelativeDateFormattingCardSettings();
 
     cards = [
         this.textFormattingCard, 
         this.backgroundFormattingCard,
-        this.startDateFormattingCard,
-        this.endDateFormattingCard,
+        this.dateFormattingCard,
         this.relativeDateFormattingCard  
       ];
 }
