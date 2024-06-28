@@ -44,7 +44,7 @@ export class Visual implements IVisual {
     public formattingSettings: VisualFormattingSettingsModel;
     public formattingSettingsService: FormattingSettingsService;
 
-    public dateInputs : HTMLInputElement;
+    //public dateInputs : HTMLInputElement;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -67,7 +67,7 @@ export class Visual implements IVisual {
             </div>
         `;
 
-        this.dateInputs = document.getElementById("date-inputs") as HTMLInputElement;
+        //this.dateInputs = document.getElementById("date-inputs") as HTMLInputElement;
         this.startDateInput = document.getElementById("startDate") as HTMLInputElement;
         this.endDateInput = document.getElementById("endDate") as HTMLInputElement;
         this.relativeDateSelect = document.getElementById("relativeDate") as HTMLSelectElement;
@@ -182,6 +182,7 @@ export class Visual implements IVisual {
         if (dateColor) {
             this.startDateInput.style.color = dateColor;
             this.endDateInput.style.color = dateColor;
+         
         }
         if (dateFontSize) {
             this.startDateInput.style.fontSize = dateFontSize;

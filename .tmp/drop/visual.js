@@ -309,20 +309,24 @@ class Visual {
         const dateColor = this.formattingSettings.dateFormatting.fontColor.value.value;
         const dateBackgroundColor = this.formattingSettings.dateFormatting.backgroundColor.value.value;
         if (dateColor) {
-            this.startDateInput.style.color = dateColor;
-            this.endDateInput.style.color = dateColor;
+            //this.startDateInput.style.color = dateColor;
+            //this.endDateInput.style.color = dateColor;
+            this.dateInputs.style.color = dateColor;
         }
         if (dateFontSize) {
-            this.startDateInput.style.fontSize = dateFontSize;
-            this.endDateInput.style.fontSize = dateFontSize;
+            //this.startDateInput.style.fontSize = dateFontSize;
+            //this.endDateInput.style.fontSize = dateFontSize;
+            this.dateInputs.style.fontSize = dateFontSize;
         }
         if (dateFontFamily) {
-            this.startDateInput.style.fontFamily = dateFontFamily;
-            this.endDateInput.style.fontFamily = dateFontFamily;
+            //this.startDateInput.style.fontFamily = dateFontFamily;
+            //this.endDateInput.style.fontFamily = dateFontFamily;
+            this.dateInputs.style.fontFamily = dateFontFamily;
         }
         if (dateBackgroundColor) {
-            this.startDateInput.style.backgroundColor = dateBackgroundColor;
-            this.endDateInput.style.backgroundColor = dateBackgroundColor;
+            //this.startDateInput.style.backgroundColor = dateBackgroundColor;
+            //this.endDateInput.style.backgroundColor = dateBackgroundColor;
+            this.dateInputs.style.backgroundColor = dateBackgroundColor;
         }
         // Relative date select formatting
         const relativeDateFontSize = `${this.formattingSettings.relativeDateFormatting.fontSize.value}px`;
