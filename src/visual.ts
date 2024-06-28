@@ -30,12 +30,9 @@ import powerbi from "powerbi-visuals-api";
 import IVisual = powerbi.extensibility.visual.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-import DataViewObjects = powerbi.DataViewObjects;
-import DataViewObject = powerbi.DataViewObject;
-import VisualObjectInstance = powerbi.VisualObjectInstance;
 import { VisualFormattingSettingsModel } from "./settings";
 import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
-
+import { interactivitySelectionService } from "powerbi-visuals-utils-interactivityutils";
 
 import "./../style/visual.less";
 
@@ -83,8 +80,8 @@ export class Visual implements IVisual {
         }
 
         const dataView = options.dataViews[0];
-        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
-        
+        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, dataView);
+
         const categories = dataView.categorical.categories[0];
 
         if (categories && categories.values && categories.values.length > 0) {
@@ -167,30 +164,67 @@ export class Visual implements IVisual {
     private updateStyles() {
         const slicerContainer = document.getElementById("slicer-container");
 
-        const textColor = this.formattingSettings.textFormattingCard.fontColor.value.value;
-        const fontSize = `${this.formattingSettings.textFormattingCard.fontSize.value}px`;
-        const fontFamily = this.formattingSettings.textFormattingCard.fontFamily.value;
-        const backgroundColor = this.formattingSettings.backgroundFormattingCard.backgroundColor.value.value;
+        // Start date input formatting
+        const startDateFontSize = `${this.formattingSettings.startDateFormattingCard.fontSize.value}px`;
+        const startDateFontFamily = this.formattingSettings.startDateFormattingCard.fontFamily.value;
+        const startDateColor = this.formattingSettings.startDateFormattingCard.fontColor.value.value;
+        const startDateBackgroundColor = this.formattingSettings.startDateFormattingCard.backgroundColor.value.value;
 
-        if (textColor) {
-            this.startDateInput.style.color = textColor;
-            this.endDateInput.style.color = textColor;
-            this.relativeDateSelect.style.color = textColor;
+        if (startDateColor) {
+            this.startDateInput.style.color = startDateColor;
         }
-        if (fontSize) {
-            this.startDateInput.style.fontSize = fontSize;
-            this.endDateInput.style.fontSize = fontSize;
-            this.relativeDateSelect.style.fontSize = fontSize;
+        if (startDateFontSize) {
+            this.startDateInput.style.fontSize = startDateFontSize;
         }
-        if (fontFamily) {
-            this.startDateInput.style.fontFamily = fontFamily;
-            this.endDateInput.style.fontFamily = fontFamily;
-            this.relativeDateSelect.style.fontFamily = fontFamily;
+        if (startDateFontFamily) {
+            this.startDateInput.style.fontFamily = startDateFontFamily;
         }
+        if (startDateBackgroundColor) {
+            this.startDateInput.style.backgroundColor = startDateBackgroundColor;
+        }
+
+        // End date input formatting 
+        const endDateFontSize = `${this.formattingSettings.endDateFormattingCard.fontSize.value}px`;
+        const endDateFontFamily = this.formattingSettings.endDateFormattingCard.fontFamily.value;
+        const endDateColor = this.formattingSettings.endDateFormattingCard.fontColor.value.value;
+        const endDateBackgroundColor = this.formattingSettings.endDateFormattingCard.backgroundColor.value.value;
+
+        if (endDateColor) {
+            this.endDateInput.style.color = endDateColor;
+        }
+        if (endDateFontSize) {
+            this.endDateInput.style.fontSize = endDateFontSize;
+        }
+        if (endDateFontFamily) {
+            this.endDateInput.style.fontFamily = endDateFontFamily;
+        }
+        if (endDateBackgroundColor) {
+            this.endDateInput.style.backgroundColor = endDateBackgroundColor;
+        }
+        
+        // Relative date select formatting
+        const relativeDateFontSize = `${this.formattingSettings.relativeDateFormattingCard.fontSize.value}px`;
+        const relativeDateFontFamily = this.formattingSettings.relativeDateFormattingCard.fontFamily.value;
+        const relativeDateColor = this.formattingSettings.relativeDateFormattingCard.fontColor.value.value;
+        const relativeDateBackgroundColor = this.formattingSettings.relativeDateFormattingCard.backgroundColor.value.value;
+
+        if (relativeDateColor) {
+            this.relativeDateSelect.style.color = relativeDateColor;
+        }
+        if (relativeDateFontSize) {
+            this.relativeDateSelect.style.fontSize = relativeDateFontSize;
+        }
+        if (relativeDateFontFamily) {
+            this.relativeDateSelect.style.fontFamily = relativeDateFontFamily;
+        }
+        if (relativeDateBackgroundColor) {
+            this.relativeDateSelect.style.backgroundColor = relativeDateBackgroundColor;
+        }
+
+        // Container background color
+        const backgroundColor = this.formattingSettings.backgroundFormattingCard.backgroundColor.value.value;
         if (backgroundColor) {
             slicerContainer.style.backgroundColor = backgroundColor;
         }
     }
-    
 }
-

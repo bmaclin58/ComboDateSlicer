@@ -27,33 +27,11 @@
 "use strict";
 
 import { formattingSettings } from "powerbi-visuals-utils-formattingmodel";
-import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
-
 
 import FormattingSettingsCard = formattingSettings.SimpleCard;
 import FormattingSettingsSlice = formattingSettings.Slice;
-import FormattingSettingsGroup = formattingSettings.Group;
 import FormattingSettingsModel = formattingSettings.Model;
 
-<<<<<<< Updated upstream
-=======
-//import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
-
-export interface IDateTextFormattingSettings {
-    fontSize: number;
-    fontFamily: string;
-    fontColor: string;
-    backgroundColor: string;
-}
-
-export interface IRelativeDateDropdownFormattingSettings {
-    fontSize: number;
-    fontFamily: string;
-    fontColor: string;
-    backgroundColor: string;
-}
-
->>>>>>> Stashed changes
 /**
  * Text Formatting Card
  */
@@ -80,7 +58,117 @@ class TextFormattingCardSettings extends FormattingSettingsCard {
     displayName: string = "Text Formatting";
     slices: Array<FormattingSettingsSlice> = [this.fontSize, this.fontFamily, this.fontColor];
 }
+/**
+ * Date 1 Formatting Card
+ */
+class StartDateFormattingCardSettings extends FormattingSettingsCard {
 
+    fontSize = new formattingSettings.NumUpDown({ 
+        name: "fontSize",
+        displayName: "Font Size",
+        value: 12});
+
+    fontFamily = new formattingSettings.FontPicker({
+            name: "fontFamily",
+            displayName: "Font Family",
+            value: "Arial"
+        });
+
+    fontColor = new formattingSettings.ColorPicker({
+            name: "fontColor",
+            displayName: "Font Color",
+            value: { value: "#000000" }
+        });
+    
+    backgroundColor = new formattingSettings.ColorPicker({
+            name: "backgroundColor",
+            displayName: "Background Color",
+            value: { value: "#FFFFFF" }
+        });
+
+    name: string = "startDateFormatting";
+    displayName: string = "Start Date Formatting";
+    slices: Array<FormattingSettingsSlice> = [
+      this.fontSize, 
+      this.fontFamily, 
+      this.fontColor,
+      this.backgroundColor
+    ];
+}
+/**
+ * Date 2 Formatting Card
+ */
+class EndDateFormattingCardSettings extends FormattingSettingsCard {
+
+    fontSize = new formattingSettings.NumUpDown({ 
+        name: "fontSize",
+        displayName: "Font Size",
+        value: 12});
+
+    fontFamily = new formattingSettings.FontPicker({
+            name: "fontFamily",
+            displayName: "Font Family",
+            value: "Arial"
+        });
+
+    fontColor = new formattingSettings.ColorPicker({
+            name: "fontColor",
+            displayName: "Font Color",
+            value: { value: "#000000" }
+        });
+    
+    backgroundColor = new formattingSettings.ColorPicker({
+            name: "backgroundColor",
+            displayName: "Background Color",
+            value: { value: "#FFFFFF" }
+        });
+
+    name: string = "startDateFormatting";
+    displayName: string = "Start Date Formatting";
+    slices: Array<FormattingSettingsSlice> = [
+      this.fontSize, 
+      this.fontFamily, 
+      this.fontColor,
+      this.backgroundColor
+    ];
+}
+/**
+ * Relative Date Formatting Card
+ */
+class RelativeDateFormattingCardSettings extends FormattingSettingsCard {
+
+    fontSize = new formattingSettings.NumUpDown({ 
+        name: "fontSize",
+        displayName: "Font Size",
+        value: 12});
+
+    fontFamily = new formattingSettings.FontPicker({
+            name: "fontFamily",
+            displayName: "Font Family",
+            value: "Arial"
+        });
+
+    fontColor = new formattingSettings.ColorPicker({
+            name: "fontColor",
+            displayName: "Font Color",
+            value: { value: "#000000" }
+        });
+    
+    backgroundColor = new formattingSettings.ColorPicker({
+            name: "backgroundColor",
+            displayName: "Background Color",
+            value: { value: "#FFFFFF" }
+        });
+
+    name: string = "startDateFormatting";
+    displayName: string = "Start Date Formatting";
+    slices: Array<FormattingSettingsSlice> = [
+      this.fontSize, 
+      this.fontFamily, 
+      this.fontColor,
+      this.backgroundColor
+    ];
+}
 /**
  * Background Formatting Card
  */
@@ -95,14 +183,6 @@ class BackgroundFormattingCardSettings extends FormattingSettingsCard {
     displayName: string = "Background Formatting";
     slices: Array<FormattingSettingsSlice> = [this.backgroundColor];
 }
-export class VisualSettingsModel extends FormattingSettingsModel {
-    // Building my visual formatting settings card
-    dateTextFormatting: FormattingSettingsCard = new myVisualCardSettings();
-
-    // Add formatting settings card to cards list in model
-    cards: Array<FormattingSettingsCard> = [this.dateTextFormatting];
-}
-
 
 /**
 * Visual settings model class
@@ -113,7 +193,15 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     textFormattingCard = new TextFormattingCardSettings();
     backgroundFormattingCard = new BackgroundFormattingCardSettings();
 
-    cards = [this.textFormattingCard, this.backgroundFormattingCard];
+    startDateFormattingCard = new StartDateFormattingCardSettings();
+    endDateFormattingCard = new EndDateFormattingCardSettings();  
+    relativeDateFormattingCard = new RelativeDateFormattingCardSettings();
+
+    cards = [
+        this.textFormattingCard, 
+        this.backgroundFormattingCard,
+        this.startDateFormattingCard,
+        this.endDateFormattingCard,
+        this.relativeDateFormattingCard  
+      ];
 }
-
-
