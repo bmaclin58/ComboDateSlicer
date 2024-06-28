@@ -1,9 +1,9 @@
 {
   "dataRoles": [
     {
-      "displayName": "Date Range",
-      "name": "dateRange",
-      "kind": "Grouping"
+      "name": "date",
+      "kind": "Grouping",
+      "displayName": "Date"
     }
   ],
   "objects": {
@@ -145,11 +145,13 @@
   
   "dataViewMappings": [
     {
+      "conditions": [
+        { "date": { "max": 1 } }
+      ],
       "categorical": {
         "categories": {
-          "for": {
-            "in": "dateRange"
-          }
+          "for": { "in": "date" },
+          "dataReductionAlgorithm": { "top": {} }
         }
       }
     }

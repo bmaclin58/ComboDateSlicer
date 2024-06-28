@@ -87,19 +87,19 @@ class relativeDateFormattingCardSettings extends FormattingSettingsCard {
      */
     fontFamily = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.FontPicker */ .z.Cx({
         name: "fontFamily",
-        displayName: "Font Family",
+        displayName: "Date Font Family",
         value: "Arial",
         visible: true
     });
     fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.NumUpDown */ .z.iB({
         name: "fontSize",
-        displayName: "Font Size",
+        displayName: "Date Font Size",
         value: 12,
         visible: true
     });
     fontColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
         name: "fontColor",
-        displayName: "Font Color",
+        displayName: "Date Font Color",
         value: { value: "#000000" },
         visible: true
     });
