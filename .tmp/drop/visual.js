@@ -3,6 +3,186 @@ var comboDateSlicer821CCC76721D44A48063DFEA0FA72849_DEBUG;
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+<<<<<<< Updated upstream
+=======
+/***/ 750:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   S: () => (/* binding */ VisualFormattingSettingsModel)
+/* harmony export */ });
+/* unused harmony export VisualSettingsModel */
+/* harmony import */ var powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(674);
+/*
+ *  Power BI Visualizations
+ *
+ *  Copyright (c) Microsoft Corporation
+ *  All rights reserved.
+ *  MIT License
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the ""Software""), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
+
+var FormattingSettingsCard = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.SimpleCard */ .z.Tn;
+var FormattingSettingsModel = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.Model */ .z.Kx;
+/**
+ * Text Formatting Card
+ */
+class TextFormattingCardSettings extends FormattingSettingsCard {
+    fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.NumUpDown */ .z.iB({
+        name: "fontSize",
+        displayName: "Font Size",
+        value: 12
+    });
+    fontFamily = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.FontPicker */ .z.Cx({
+        name: "fontFamily",
+        displayName: "Font Family",
+        value: "Arial"
+    });
+    fontColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
+        name: "fontColor",
+        displayName: "Font Color",
+        value: { value: "#000000" }
+    });
+    name = "textFormatting";
+    displayName = "Text Formatting";
+    slices = [this.fontSize, this.fontFamily, this.fontColor];
+}
+/**
+ * Date 1 Formatting Card
+ */
+class dateFormattingCardSettings extends FormattingSettingsCard {
+    fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.NumUpDown */ .z.iB({
+        name: "fontSize",
+        displayName: "Font Size",
+        value: 12
+    });
+    fontFamily = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.FontPicker */ .z.Cx({
+        name: "fontFamily",
+        displayName: "Font Family",
+        value: "Arial"
+    });
+    fontColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
+        name: "fontColor",
+        displayName: "Font Color",
+        value: { value: "#000000" }
+    });
+    backgroundColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
+        name: "backgroundColor",
+        displayName: "Background Color",
+        value: { value: "#FFFFFF" }
+    });
+    name = "dateTextFormatting";
+    displayName = "Start Date Formatting";
+    slices = [
+        this.fontSize,
+        this.fontFamily,
+        this.fontColor,
+        this.backgroundColor
+    ];
+}
+/**
+ * Relative Date Formatting Card
+ */
+class RelativeDateFormattingCardSettings extends FormattingSettingsCard {
+    fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.NumUpDown */ .z.iB({
+        name: "fontSize",
+        displayName: "Font Size",
+        value: 12
+    });
+    fontFamily = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.FontPicker */ .z.Cx({
+        name: "fontFamily",
+        displayName: "Font Family",
+        value: "Arial"
+    });
+    fontColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
+        name: "fontColor",
+        displayName: "Font Color",
+        value: { value: "#000000" }
+    });
+    backgroundColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
+        name: "backgroundColor",
+        displayName: "Background Color",
+        value: { value: "#FFFFFF" }
+    });
+    name = "relativeDateDropdownFormatting";
+    displayName = "Start Date Formatting";
+    slices = [
+        this.fontSize,
+        this.fontFamily,
+        this.fontColor,
+        this.backgroundColor
+    ];
+}
+/**
+ * Background Formatting Card
+ */
+class BackgroundFormattingCardSettings extends FormattingSettingsCard {
+    backgroundColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
+        name: "backgroundColor",
+        displayName: "Background Color",
+        value: { value: "#FFFFFF" }
+    });
+    name = "backgroundFormatting";
+    displayName = "Background Formatting";
+    slices = [this.backgroundColor];
+}
+class VisualSettingsModel extends (/* unused pure expression or super */ null && (FormattingSettingsModel)) {
+    // Building my visual formatting settings card
+    myVisualCard = new myVisualCardSettings();
+    // Add formatting settings card to cards list in model
+    cards = [this.myVisualCard];
+}
+class myVisualCardSettings extends (/* unused pure expression or super */ null && (FormattingSettingsCard)) {
+    myNumericSlice = new formattingSettings.NumUpDown({
+        name: "myNumericSlice",
+        displayName: "My Formatting Numeric Slice",
+        value: 100,
+    });
+    name = "myVisualCard";
+    displayName = "My Formatting Card";
+    analyticsPane = false;
+    slices = [this.myNumericSlice];
+}
+/**
+* Visual settings model class
+*
+*/
+class VisualFormattingSettingsModel extends FormattingSettingsModel {
+    // Create formatting settings model formatting cards
+    textFormattingCard = new TextFormattingCardSettings();
+    backgroundFormattingCard = new BackgroundFormattingCardSettings();
+    dateFormattingCard = new dateFormattingCardSettings();
+    relativeDateFormattingCard = new RelativeDateFormattingCardSettings();
+    cards = [
+        this.textFormattingCard,
+        this.backgroundFormattingCard,
+        this.dateFormattingCard,
+        this.relativeDateFormattingCard
+    ];
+}
+
+
+/***/ }),
+
+>>>>>>> Stashed changes
 /***/ 423:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 

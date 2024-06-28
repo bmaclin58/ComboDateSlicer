@@ -36,6 +36,7 @@ import VisualObjectInstance = powerbi.VisualObjectInstance;
 import { VisualFormattingSettingsModel } from "./settings";
 import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
 
+
 import "./../style/visual.less";
 
 export class Visual implements IVisual {
@@ -190,4 +191,6 @@ export class Visual implements IVisual {
             slicerContainer.style.backgroundColor = backgroundColor;
         }
     }
+    
 }
+

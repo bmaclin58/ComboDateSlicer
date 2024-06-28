@@ -27,11 +27,33 @@
 "use strict";
 
 import { formattingSettings } from "powerbi-visuals-utils-formattingmodel";
+import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
+
 
 import FormattingSettingsCard = formattingSettings.SimpleCard;
 import FormattingSettingsSlice = formattingSettings.Slice;
+import FormattingSettingsGroup = formattingSettings.Group;
 import FormattingSettingsModel = formattingSettings.Model;
 
+<<<<<<< Updated upstream
+=======
+//import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
+
+export interface IDateTextFormattingSettings {
+    fontSize: number;
+    fontFamily: string;
+    fontColor: string;
+    backgroundColor: string;
+}
+
+export interface IRelativeDateDropdownFormattingSettings {
+    fontSize: number;
+    fontFamily: string;
+    fontColor: string;
+    backgroundColor: string;
+}
+
+>>>>>>> Stashed changes
 /**
  * Text Formatting Card
  */
@@ -73,6 +95,14 @@ class BackgroundFormattingCardSettings extends FormattingSettingsCard {
     displayName: string = "Background Formatting";
     slices: Array<FormattingSettingsSlice> = [this.backgroundColor];
 }
+export class VisualSettingsModel extends FormattingSettingsModel {
+    // Building my visual formatting settings card
+    dateTextFormatting: FormattingSettingsCard = new myVisualCardSettings();
+
+    // Add formatting settings card to cards list in model
+    cards: Array<FormattingSettingsCard> = [this.dateTextFormatting];
+}
+
 
 /**
 * Visual settings model class
@@ -85,3 +115,5 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
 
     cards = [this.textFormattingCard, this.backgroundFormattingCard];
 }
+
+

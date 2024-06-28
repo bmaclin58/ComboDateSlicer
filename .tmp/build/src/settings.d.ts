@@ -16,7 +16,48 @@ declare class DataPointCardSettings extends FormattingSettingsCard {
     slices: Array<FormattingSettingsSlice>;
 }
 /**
+<<<<<<< Updated upstream
 * visual settings model class
+=======
+ * Date 1 Formatting Card
+ */
+declare class dateFormattingCardSettings extends FormattingSettingsCard {
+    fontSize: formattingSettings.NumUpDown;
+    fontFamily: formattingSettings.FontPicker;
+    fontColor: formattingSettings.ColorPicker;
+    backgroundColor: formattingSettings.ColorPicker;
+    name: string;
+    displayName: string;
+    slices: Array<FormattingSettingsSlice>;
+}
+/**
+ * Relative Date Formatting Card
+ */
+declare class RelativeDateFormattingCardSettings extends FormattingSettingsCard {
+    fontSize: formattingSettings.NumUpDown;
+    fontFamily: formattingSettings.FontPicker;
+    fontColor: formattingSettings.ColorPicker;
+    backgroundColor: formattingSettings.ColorPicker;
+    name: string;
+    displayName: string;
+    slices: Array<FormattingSettingsSlice>;
+}
+/**
+ * Background Formatting Card
+ */
+declare class BackgroundFormattingCardSettings extends FormattingSettingsCard {
+    backgroundColor: formattingSettings.ColorPicker;
+    name: string;
+    displayName: string;
+    slices: Array<FormattingSettingsSlice>;
+}
+export declare class VisualSettingsModel extends FormattingSettingsModel {
+    myVisualCard: FormattingSettingsCard;
+    cards: Array<FormattingSettingsCard>;
+}
+/**
+* Visual settings model class
+>>>>>>> Stashed changes
 *
 */
 export declare class VisualFormattingSettingsModel extends FormattingSettingsModel {
