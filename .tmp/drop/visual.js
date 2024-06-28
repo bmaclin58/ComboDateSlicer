@@ -196,7 +196,7 @@ class Visual {
     relativeDateSelect;
     formattingSettings;
     formattingSettingsService;
-    dateInputs;
+    //public dateInputs : HTMLInputElement;
     constructor(options) {
         this.target = options.element;
         this.formattingSettingsService = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .FormattingSettingsService */ .O();
@@ -216,7 +216,7 @@ class Visual {
                 </select>
             </div>
         `;
-        this.dateInputs = document.getElementById("date-inputs");
+        //this.dateInputs = document.getElementById("date-inputs") as HTMLInputElement;
         this.startDateInput = document.getElementById("startDate");
         this.endDateInput = document.getElementById("endDate");
         this.relativeDateSelect = document.getElementById("relativeDate");
@@ -309,24 +309,20 @@ class Visual {
         const dateColor = this.formattingSettings.dateFormatting.fontColor.value.value;
         const dateBackgroundColor = this.formattingSettings.dateFormatting.backgroundColor.value.value;
         if (dateColor) {
-            //this.startDateInput.style.color = dateColor;
-            //this.endDateInput.style.color = dateColor;
-            this.dateInputs.style.color = dateColor;
+            this.startDateInput.style.color = dateColor;
+            this.endDateInput.style.color = dateColor;
         }
         if (dateFontSize) {
-            //this.startDateInput.style.fontSize = dateFontSize;
-            //this.endDateInput.style.fontSize = dateFontSize;
-            this.dateInputs.style.fontSize = dateFontSize;
+            this.startDateInput.style.fontSize = dateFontSize;
+            this.endDateInput.style.fontSize = dateFontSize;
         }
         if (dateFontFamily) {
-            //this.startDateInput.style.fontFamily = dateFontFamily;
-            //this.endDateInput.style.fontFamily = dateFontFamily;
-            this.dateInputs.style.fontFamily = dateFontFamily;
+            this.startDateInput.style.fontFamily = dateFontFamily;
+            this.endDateInput.style.fontFamily = dateFontFamily;
         }
         if (dateBackgroundColor) {
-            //this.startDateInput.style.backgroundColor = dateBackgroundColor;
-            //this.endDateInput.style.backgroundColor = dateBackgroundColor;
-            this.dateInputs.style.backgroundColor = dateBackgroundColor;
+            this.startDateInput.style.backgroundColor = dateBackgroundColor;
+            this.endDateInput.style.backgroundColor = dateBackgroundColor;
         }
         // Relative date select formatting
         const relativeDateFontSize = `${this.formattingSettings.relativeDateFormatting.fontSize.value}px`;

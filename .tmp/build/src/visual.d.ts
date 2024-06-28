@@ -12,7 +12,6 @@ export declare class Visual implements IVisual {
     relativeDateSelect: HTMLSelectElement;
     formattingSettings: VisualFormattingSettingsModel;
     formattingSettingsService: FormattingSettingsService;
-    dateInputs: HTMLInputElement;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;
     getFormattingModel(): powerbi.visuals.FormattingModel;
