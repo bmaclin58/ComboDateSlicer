@@ -32,119 +32,114 @@ import FormattingSettingsCard = formattingSettings.SimpleCard;
 import FormattingSettingsSlice = formattingSettings.Slice;
 import FormattingSettingsModel = formattingSettings.Model;
 
-/**
- * Text Formatting Card
- */
-class TextFormattingCardSettings extends FormattingSettingsCard {
-    fontSize = new formattingSettings.NumUpDown({
-        name: "fontSize",
-        displayName: "Font Size",
-        value: 12
-    });
+export class dateFormattingCard extends FormattingSettingsCard{
 
-    fontFamily = new formattingSettings.FontPicker({
-        name: "fontFamily",
-        displayName: "Font Family",
-        value: "Arial"
-    });
-
-    fontColor = new formattingSettings.ColorPicker({
-        name: "fontColor",
-        displayName: "Font Color",
-        value: { value: "#000000" }
-    });
-
-    name: string = "textFormatting";
-    displayName: string = "Text Formatting";
-    slices: Array<FormattingSettingsSlice> = [this.fontSize, this.fontFamily, this.fontColor];
-}
 /**
  * Date Formatting Card
  */
-class dateFormattingCard extends FormattingSettingsCard {
+    public fontFamily = new formattingSettings.FontPicker({
+        name: "fontFamily",
+        displayName: "Date Font Family",
+        value: "Arial",
+        visible: true
+    });
 
-    fontSize = new formattingSettings.NumUpDown({ 
+    public fontSize = new formattingSettings.NumUpDown({ 
         name: "fontSize",
-        displayName: "Font Size",
-        value: 12});
+        displayName: "Date Font Size",
+        value: 12,
+        visible: true
+    });    
+        
+    public fontColor = new formattingSettings.ColorPicker({
+        name: "fontColor",
+        displayName: "Date Font Color",
+        value: { value: "#000000" },
+        visible: true
+    });
 
-    fontFamily = new formattingSettings.FontPicker({
-            name: "fontFamily",
-            displayName: "Font Family",
-            value: "Arial"
-        });
+    public backgroundColor = new formattingSettings.ColorPicker({
+        name: "backgroundColor",
+        displayName: "Date Background Color",
+        value: { value: "#FFFFFF" },
+        visible: true
+    });
 
-    fontColor = new formattingSettings.ColorPicker({
-            name: "fontColor",
-            displayName: "Font Color",
-            value: { value: "#000000" }
-        });
-    
-    backgroundColor = new formattingSettings.ColorPicker({
-            name: "backgroundColor",
-            displayName: "Background Color",
-            value: { value: "#FFFFFF" }
-        });
-
-    name: string = "dateFormatting";
-    displayName: string = "Date Formatting";
-    slices: Array<FormattingSettingsSlice> = [
+    public name: string = "dateFormatting";
+    public displayName: string = "Date Formatting";
+    public visible: boolean = true;
+    public slices:  FormattingSettingsSlice[] = [
       this.fontSize, 
       this.fontFamily, 
       this.fontColor,
       this.backgroundColor
     ];
+
 }
 /**
  * Relative Date Formatting Card
  */
-class RelativeDateFormattingCardSettings extends FormattingSettingsCard {
 
-    fontSize = new formattingSettings.NumUpDown({ 
-        name: "fontSize",
-        displayName: "Font Size",
-        value: 12});
+export class relativeDateFormattingCardSettings extends FormattingSettingsCard{
 
-    fontFamily = new formattingSettings.FontPicker({
+    /**
+     * Text Formatting Card
+     */
+        public fontFamily = new formattingSettings.FontPicker({
             name: "fontFamily",
-            displayName: "Font Family",
-            value: "Arial"
-        });
-
-    fontColor = new formattingSettings.ColorPicker({
-            name: "fontColor",
-            displayName: "Font Color",
-            value: { value: "#000000" }
+            displayName: "Date Font Family",
+            value: "Arial",
+            visible: true
         });
     
-    backgroundColor = new formattingSettings.ColorPicker({
-            name: "backgroundColor",
-            displayName: "Background Color",
-            value: { value: "#FFFFFF" }
+        public fontSize = new formattingSettings.NumUpDown({ 
+            name: "fontSize",
+            displayName: "Date Font Size",
+            value: 12,
+            visible: true
+        });    
+            
+        public fontColor = new formattingSettings.ColorPicker({
+            name: "fontColor",
+            displayName: "Date Font Color",
+            value: { value: "#000000" },
+            visible: true
         });
+    
+        public backgroundColor = new formattingSettings.ColorPicker({
+            name: "backgroundColor",
+            displayName: "Date Background Color",
+            value: { value: "#FFFFFF" },
+            visible: true
+        });
+    
+        public name: string = "relativeDateFormatting";
+        public displayName: string = "Relative Date Formatting";
+        public visible: boolean = true;
+        public slices:  FormattingSettingsSlice[] = [
+          this.fontSize, 
+          this.fontFamily, 
+          this.fontColor,
+          this.backgroundColor
+        ];
+    
+    
+    }
 
-    name: string = "relativeDateFormatting";
-    displayName: string = "Relative Date Formatting";
-    slices: Array<FormattingSettingsSlice> = [
-      this.fontSize, 
-      this.fontFamily, 
-      this.fontColor,
-      this.backgroundColor
-    ];
-}
 /**
  * Background Formatting Card
  */
-class BackgroundFormattingCardSettings extends FormattingSettingsCard {
+export class backgroundFormattingCard extends FormattingSettingsCard {
     backgroundColor = new formattingSettings.ColorPicker({
         name: "backgroundColor",
         displayName: "Background Color",
         value: { value: "#FFFFFF" }
     });
 
-    name: string = "backgroundFormatting";
-    displayName: string = "Background Formatting";
-    slices: Array<FormattingSettingsSlice> = [this.backgroundColor];
+    public name: string = "backgroundFormatting";
+    public displayName: string = "Background Formatting";
+    public visible: boolean = true;
+    public slices:  FormattingSettingsSlice[] = [this.backgroundColor];
 }
 
 /**
@@ -153,16 +148,13 @@ class BackgroundFormattingCardSettings extends FormattingSettingsCard {
 */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     // Create formatting settings model formatting cards
-    textFormattingCard = new TextFormattingCardSettings();
-    backgroundFormattingCard = new BackgroundFormattingCardSettings();
+    public backgroundFormatting: backgroundFormattingCard = new backgroundFormattingCard();
+    public dateFormatting: dateFormattingCard = new dateFormattingCard();
+    public relativeDateFormatting: relativeDateFormattingCardSettings = new relativeDateFormattingCardSettings();
 
-    dateFormattingCard = new dateFormattingCard();
-    relativeDateFormattingCard = new RelativeDateFormattingCardSettings();
-
-    cards = [
-        this.textFormattingCard, 
-        this.backgroundFormattingCard,
-        this.dateFormattingCard,
-        this.relativeDateFormattingCard  
+    public cards = [
+        this.backgroundFormatting,
+        this.dateFormatting,
+        this.relativeDateFormatting  
       ];
 }

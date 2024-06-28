@@ -40,6 +40,7 @@ export class Visual implements IVisual {
     public startDateInput: HTMLInputElement;
     public endDateInput: HTMLInputElement;
     public relativeDateSelect: HTMLSelectElement;
+
     public formattingSettings: VisualFormattingSettingsModel;
     public formattingSettingsService: FormattingSettingsService;
 
@@ -110,6 +111,10 @@ export class Visual implements IVisual {
         this.updateStyles();
     }
 
+    public getFormattingModel(): powerbi.visuals.FormattingModel {
+        return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
+    }
+
     private updateDateRange() {
         const startDate = new Date(this.startDateInput.value);
         const endDate = new Date(this.endDateInput.value);
@@ -169,10 +174,10 @@ export class Visual implements IVisual {
         const slicerContainer = document.getElementById("slicer-container");
 
         // Start date input formatting
-        const dateFontSize = `${this.formattingSettings.dateFormattingCard.fontSize.value}px`;
-        const dateFontFamily = this.formattingSettings.dateFormattingCard.fontFamily.value;
-        const dateColor = this.formattingSettings.dateFormattingCard.fontColor.value.value;
-        const dateBackgroundColor = this.formattingSettings.dateFormattingCard.backgroundColor.value.value;
+        const dateFontSize = `${this.formattingSettings.dateFormatting.fontSize.value}px`;
+        const dateFontFamily = this.formattingSettings.dateFormatting.fontFamily.value;
+        const dateColor = this.formattingSettings.dateFormatting.fontColor.value.value;
+        const dateBackgroundColor = this.formattingSettings.dateFormatting.backgroundColor.value.value;
 
         if (dateColor) {
             this.startDateInput.style.color = dateColor;
@@ -192,10 +197,10 @@ export class Visual implements IVisual {
         }
 
         // Relative date select formatting
-        const relativeDateFontSize = `${this.formattingSettings.relativeDateFormattingCard.fontSize.value}px`;
-        const relativeDateFontFamily = this.formattingSettings.relativeDateFormattingCard.fontFamily.value;
-        const relativeDateColor = this.formattingSettings.relativeDateFormattingCard.fontColor.value.value;
-        const relativeDateBackgroundColor = this.formattingSettings.relativeDateFormattingCard.backgroundColor.value.value;
+        const relativeDateFontSize = `${this.formattingSettings.relativeDateFormatting.fontSize.value}px`;
+        const relativeDateFontFamily = this.formattingSettings.relativeDateFormatting.fontFamily.value;
+        const relativeDateColor = this.formattingSettings.relativeDateFormatting.fontColor.value.value;
+        const relativeDateBackgroundColor = this.formattingSettings.relativeDateFormatting.backgroundColor.value.value;
 
         if (relativeDateColor) {
             this.relativeDateSelect.style.color = relativeDateColor;
@@ -211,7 +216,7 @@ export class Visual implements IVisual {
         }
 
         // Container background color
-        const backgroundColor = this.formattingSettings.backgroundFormattingCard.backgroundColor.value.value;
+        const backgroundColor = this.formattingSettings.backgroundFormatting.backgroundColor.value.value;
         if (backgroundColor) {
             slicerContainer.style.backgroundColor = backgroundColor;
         }
