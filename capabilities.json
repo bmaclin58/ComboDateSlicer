@@ -1,67 +1,196 @@
 {
-    "dataRoles": [
-      {
-        "displayName": "Date Range",
-        "name": "dateRange",
-        "kind": "Grouping"
-      }
-    ],
-    "dataViewMappings": [
-      {
-        "categorical": {
-          "categories": {
-            "for": {
-              "in": "dateRange"
-            }
-          }
-        }
-      }
-    ],
-    "objects": {
-      "textFormatting": {
-        "displayName": "Text Formatting",
-        "properties": {
-          "fontSize": {
-            "displayName": "Font Size",
-            "type": {
-              "numeric": true
-            }
-          },
-          "fontFamily": {
-          "displayName": "Font Family",
-          "type": {
-            "formatting": {
-              "fontFamily": true
-            }
-            }
-          },
-          "fontColor": {
-            "displayName": "Font Color",
-            "type": {
-              "fill": {
-                "solid": {
-                  "color": true
-                }
-              }
-            }
-          }
-        }
-      },
-      "backgroundFormatting": {
-        "displayName": "Background Formatting",
-        "properties": {
-          "backgroundColor": {
-            "displayName": "Background Color",
-            "type": {
-              "fill": {
-                "solid": {
-                  "color": true
-                }
-              }
-            }
+  "dataRoles": [
+    {
+      "displayName": "Date Range",
+      "name": "dateRange",
+      "kind": "Grouping"
+    }
+  ],
+  "dataViewMappings": [
+    {
+      "categorical": {
+        "categories": {
+          "for": {
+            "in": "dateRange"
           }
         }
       }
     }
+  ],
+  "objects": {
+      "general": {
+          "displayName": "Filtering",
+          "displayNameKey": "filterGeneral",
+          "properties": {
+              "filter": {
+                  "type": {
+                      "filter": true
+                  }
+              }
+          }
+      },
+    "textFormatting": {
+      "displayName": "Text Formatting",
+      "properties": {
+        "fontSize": {
+          "displayName": "Font Size",
+          "type": {
+            "numeric": true
+          }
+        },
+        "fontFamily": {
+        "displayName": "Font Family",
+        "type": {
+          "formatting": {
+            "fontFamily": true
+          }
+          }
+        },
+        "fontColor": {
+          "displayName": "Font Color",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "backgroundFormatting": {
+      "displayName": "Background Formatting",
+      "properties": {
+        "backgroundColor": {
+          "displayName": "Background Color",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        }
+      }
+    },
+      "startDateFormatting": {
+      "displayName": "Start Date Formatting",
+      "properties": {
+      "fontSize": {
+      "displayName": "Font Size",
+      "type": {
+      "numeric": true
+    }
+  },
+  "fontFamily": {
+    "displayName": "Font Family",
+    "type": {
+      "formatting": {
+        "fontFamily": true 
+      }
+    }
+  },
+  "fontColor": {
+    "displayName": "Font Color",  
+    "type": {
+      "fill": {
+        "solid": {
+          "color": true
+        }
+      }
+    }
+  },
+  "backgroundColor": {
+    "displayName": "Background Color",
+    "type": {  
+      "fill": {
+        "solid": {
+          "color": true
+        }
+      }
+    }
   }
-  
+}
+},"endDateFormatting": {
+  "displayName": "Start Date Formatting",
+  "properties": {
+    "fontSize": {
+      "displayName": "Font Size",
+      "type": {
+      "numeric": true
+    }
+  },
+  "fontFamily": {
+    "displayName": "Font Family",
+    "type": {
+      "formatting": {
+        "fontFamily": true 
+      }
+    }
+  },
+  "fontColor": {
+    "displayName": "Font Color",  
+    "type": {
+      "fill": {
+        "solid": {
+          "color": true
+        }
+      }
+    }
+  },
+  "backgroundColor": {
+    "displayName": "Background Color",
+    "type": {  
+      "fill": {
+        "solid": {
+          "color": true
+        }
+      }
+    }
+  }
+}
+},"relativeDateFormatting": {
+  "displayName": "Start Date Formatting",
+  "properties": {
+    "fontSize": {
+    "displayName": "Font Size",
+    "type": {
+      "numeric": true
+    }
+  },
+  "fontFamily": {
+    "displayName": "Font Family",
+    "type": {
+      "formatting": {
+        "fontFamily": true 
+      }
+    }
+  },
+  "fontColor": {
+    "displayName": "Font Color",  
+    "type": {
+      "fill": {
+        "solid": {
+          "color": true
+        }
+      }
+    }
+  },
+  "backgroundColor": {
+    "displayName": "Background Color",
+    "type": {  
+      "fill": {
+        "solid": {
+          "color": true
+        }
+      }
+    }
+  }
+}
+}
+    
+  },
+  "supportsSynchronizingFilterState": true,
+  "privileges": [],
+  "supportsMultiVisualSelection": true
+}
