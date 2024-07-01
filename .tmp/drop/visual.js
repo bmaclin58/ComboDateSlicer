@@ -53,7 +53,7 @@ class dateFormattingCard extends FormattingSettingsCard {
     fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.NumUpDown */ .z.iB({
         name: "fontSize",
         displayName: "Date Font Size",
-        value: 12,
+        value: 18,
         visible: true
     });
     fontColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
@@ -94,7 +94,7 @@ class relativeDateFormattingCardSettings extends FormattingSettingsCard {
     fontSize = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.NumUpDown */ .z.iB({
         name: "fontSize",
         displayName: "Date Font Size",
-        value: 12,
+        value: 16,
         visible: true
     });
     fontColor = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.ColorPicker */ .z.sk({
@@ -193,18 +193,25 @@ class VisualFormattingSettingsModel extends FormattingSettingsModel {
 
 
 
+//import { interactivitySelectionService } from "powerbi-visuals-utils-interactivityutils";
 
 class Visual {
     target;
     startDateInput;
     endDateInput;
     relativeDateSelect;
+    slicerContainer;
+    host;
     formattingSettings;
     formattingSettingsService;
+    tableName;
+    columnName;
     //public dateInputs : HTMLInputElement;
     constructor(options) {
         this.target = options.element;
+        this.host = options.host;
         this.formattingSettingsService = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_1__/* .FormattingSettingsService */ .O();
+        this.formattingSettings = new _settings__WEBPACK_IMPORTED_MODULE_0__/* .VisualFormattingSettingsModel */ .SC();
         this.target.innerHTML = `
             <div id="slicer-container">
                 <div id="date-inputs">
@@ -228,6 +235,10 @@ class Visual {
         this.startDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.endDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.relativeDateSelect.addEventListener("change", this.updateRelativeDate.bind(this));
+        // Add an event listener for slicer changes
+        this.startDateInput.addEventListener("change", () => this.onSlicerChange());
+        this.endDateInput.addEventListener("change", () => this.onSlicerChange());
+        this.relativeDateSelect.addEventListener("change", () => this.updateRelativeDate());
     }
     update(options) {
         if (!options || !options.dataViews || options.dataViews.length === 0) {
@@ -300,34 +311,12 @@ class Visual {
         this.startDateInput.value = startDate.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
         this.updateDateRange();
+        //this.onSlicerChange();
     }
     setDefaultDates() {
         const today = new Date();
         this.startDateInput.value = today.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
-    }
-    // Utility function to convert hex color to RGB
-    hexToRgb(hex) {
-        // Remove the leading # if present
-        hex = hex.replace(/^#/, '');
-        // Parse the hex string
-        const bigint = parseInt(hex, 16);
-        if (hex.length === 3) {
-            // If it's a shorthand hex code, expand it
-            return {
-                r: (bigint >> 8) & 0xF | (bigint >> 4) & 0xF0,
-                g: (bigint >> 4) & 0xF | (bigint) & 0xF0,
-                b: (bigint & 0xF) << 4 | (bigint & 0xF)
-            };
-        }
-        else if (hex.length === 6) {
-            return {
-                r: (bigint >> 16) & 0xFF,
-                g: (bigint >> 8) & 0xFF,
-                b: bigint & 0xFF
-            };
-        }
-        return null;
     }
     updateStyles() {
         const slicerContainer = document.getElementById("slicer-container");
@@ -371,16 +360,37 @@ class Visual {
         }
         // Container background color
         const backgroundColor = this.formattingSettings.backgroundFormatting.backgroundColor.value.value;
-        const transparency = this.formattingSettings.backgroundFormatting.transparency.value;
-        if (backgroundColor && transparency !== undefined) {
-            // Convert the hex color to RGB
-            const rgb = this.hexToRgb(backgroundColor);
-            if (rgb) {
-                // Create the rgba color with transparency
-                const rgbaColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1 - transparency / 100})`;
-                slicerContainer.style.backgroundColor = rgbaColor;
-            }
+        if (backgroundColor) {
+            slicerContainer.style.backgroundColor = backgroundColor;
         }
+    }
+    onSlicerChange() {
+        const startDate = this.startDateInput.value;
+        const endDate = this.endDateInput.value;
+        if (!startDate || !endDate) {
+            return;
+        }
+        const startFilter = {
+            $schema: "https://powerbi.com/product/schema#basic",
+            target: {
+                table: "YourTableName",
+                column: "YourColumnName"
+            },
+            operator: "ge",
+            values: [startDate]
+        };
+        const endFilter = {
+            $schema: "https://powerbi.com/product/schema#basic",
+            target: {
+                table: "YourTableName",
+                column: "YourColumnName"
+            },
+            operator: "le",
+            values: [endDate]
+        };
+        // Apply the filters
+        this.host.applyJsonFilter(startFilter, "general", "filter", 0 /* powerbi.FilterAction.merge */);
+        this.host.applyJsonFilter(endFilter, "general", "filter", 0 /* powerbi.FilterAction.merge */);
     }
 }
 

@@ -32,52 +32,135 @@ import FormattingSettingsCard = formattingSettings.SimpleCard;
 import FormattingSettingsSlice = formattingSettings.Slice;
 import FormattingSettingsModel = formattingSettings.Model;
 
+export class dateFormattingCard extends FormattingSettingsCard{
+
 /**
- * Data Point Formatting Card
+ * Date Formatting Card
  */
-class DataPointCardSettings extends FormattingSettingsCard {
-    defaultColor = new formattingSettings.ColorPicker({
-        name: "defaultColor",
-        displayName: "Default color",
-        value: { value: "" }
+    public fontFamily = new formattingSettings.FontPicker({
+        name: "fontFamily",
+        displayName: "Date Font Family",
+        value: "Arial",
+        visible: true
     });
 
-    showAllDataPoints = new formattingSettings.ToggleSwitch({
-        name: "showAllDataPoints",
-        displayName: "Show all",
-        value: true
-    });
-
-    fill = new formattingSettings.ColorPicker({
-        name: "fill",
-        displayName: "Fill",
-        value: { value: "" }
-    });
-
-    fillRule = new formattingSettings.ColorPicker({
-        name: "fillRule",
-        displayName: "Color saturation",
-        value: { value: "" }
-    });
-
-    fontSize = new formattingSettings.NumUpDown({
+    public fontSize = new formattingSettings.NumUpDown({ 
         name: "fontSize",
-        displayName: "Text Size",
-        value: 12
+        displayName: "Date Font Size",
+        value: 18,
+        visible: true
+    });    
+        
+    public fontColor = new formattingSettings.ColorPicker({
+        name: "fontColor",
+        displayName: "Date Font Color",
+        value: { value: "#000000" },
+        visible: true
     });
 
-    name: string = "dataPoint";
-    displayName: string = "Data colors";
-    slices: Array<FormattingSettingsSlice> = [this.defaultColor, this.showAllDataPoints, this.fill, this.fillRule, this.fontSize];
+    public backgroundColor = new formattingSettings.ColorPicker({
+        name: "backgroundColor",
+        displayName: "Date Background Color",
+        value: { value: "#FFFFFF" },
+        visible: true
+    });
+
+    public name: string = "dateFormatting";
+    public displayName: string = "Date Formatting";
+    public visible: boolean = true;
+    public slices:  FormattingSettingsSlice[] = [
+      this.fontSize, 
+      this.fontFamily, 
+      this.fontColor,
+      this.backgroundColor
+    ];
+
+}
+/**
+ * Relative Date Formatting Card
+ */
+
+export class relativeDateFormattingCardSettings extends FormattingSettingsCard{
+
+    /**
+     * Text Formatting Card
+     */
+        public fontFamily = new formattingSettings.FontPicker({
+            name: "fontFamily",
+            displayName: "Date Font Family",
+            value: "Arial",
+            visible: true
+        });
+    
+        public fontSize = new formattingSettings.NumUpDown({ 
+            name: "fontSize",
+            displayName: "Date Font Size",
+            value: 16,
+            visible: true
+        });    
+            
+        public fontColor = new formattingSettings.ColorPicker({
+            name: "fontColor",
+            displayName: "Date Font Color",
+            value: { value: "#000000" },
+            visible: true
+        });
+    
+        public backgroundColor = new formattingSettings.ColorPicker({
+            name: "backgroundColor",
+            displayName: "Background Color",
+            value: { value: "#FFFFFF" },
+            visible: true
+        });
+    
+        public name: string = "relativeDateFormatting";
+        public displayName: string = "Relative Date Formatting";
+        public visible: boolean = true;
+        public slices:  FormattingSettingsSlice[] = [
+          this.fontSize, 
+          this.fontFamily, 
+          this.fontColor,
+          this.backgroundColor
+        ];
+    
+    
+    }
+
+/**
+ * Background Formatting Card
+ */
+export class backgroundFormattingCard extends FormattingSettingsCard {
+    backgroundColor = new formattingSettings.ColorPicker({
+        name: "backgroundColor",
+        displayName: "Background Color",
+        value: { value: "#FFFFFF" }
+    });
+
+    transparency = new formattingSettings.NumUpDown({
+        name: "Transparency",
+        displayName: "Transparency",
+        value: 0
+    });
+
+    public name: string = "backgroundFormatting";
+    public displayName: string = "Background Formatting";
+    public visible: boolean = true;
+    public slices:  FormattingSettingsSlice[] = [this.backgroundColor, this.transparency];
 }
 
 /**
-* visual settings model class
+* Visual settings model class
 *
 */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     // Create formatting settings model formatting cards
-    dataPointCard = new DataPointCardSettings();
+    public backgroundFormatting: backgroundFormattingCard = new backgroundFormattingCard();
+    public dateFormatting: dateFormattingCard = new dateFormattingCard();
+    public relativeDateFormatting: relativeDateFormattingCardSettings = new relativeDateFormattingCardSettings();
 
-    cards = [this.dataPointCard];
+    public cards = [
+        this.backgroundFormatting,
+        this.dateFormatting,
+        this.relativeDateFormatting  
+      ];
 }

@@ -29,9 +29,14 @@ import powerbi from "powerbi-visuals-api";
 import IVisual = powerbi.extensibility.visual.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
+//import DataView = powerbi.DataView;
+//import * as models from "powerbi-models";
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
+
+
 import { VisualFormattingSettingsModel } from "./settings";
 import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
-import { interactivitySelectionService } from "powerbi-visuals-utils-interactivityutils";
+//import { interactivitySelectionService } from "powerbi-visuals-utils-interactivityutils";
 
 import "./../style/visual.less";
 
@@ -41,14 +46,25 @@ export class Visual implements IVisual {
     public endDateInput: HTMLInputElement;
     public relativeDateSelect: HTMLSelectElement;
 
+    public slicerContainer: HTMLElement;
+    public host: IVisualHost;
+
     public formattingSettings: VisualFormattingSettingsModel;
     public formattingSettingsService: FormattingSettingsService;
+
+    private tableName: string;
+    private columnName: string;
 
     //public dateInputs : HTMLInputElement;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
+        this.host = options.host;
+
         this.formattingSettingsService = new FormattingSettingsService();
+        this.formattingSettings = new VisualFormattingSettingsModel();
+
+
 
         this.target.innerHTML = `
             <div id="slicer-container">
@@ -76,7 +92,14 @@ export class Visual implements IVisual {
         this.startDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.endDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.relativeDateSelect.addEventListener("change", this.updateRelativeDate.bind(this));
+
         
+        // Add an event listener for slicer changes
+        this.startDateInput.addEventListener("change", () => this.onSlicerChange());
+        this.endDateInput.addEventListener("change", () => this.onSlicerChange());
+        this.relativeDateSelect.addEventListener("change", () => this.updateRelativeDate());
+
+
     }
 
     public update(options: VisualUpdateOptions) {
@@ -160,36 +183,15 @@ export class Visual implements IVisual {
 
         this.startDateInput.value = startDate.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
-
+        
         this.updateDateRange();
+        //this.onSlicerChange();
     }
 
     private setDefaultDates() {
         const today = new Date();
         this.startDateInput.value = today.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
-    }
-    // Utility function to convert hex color to RGB
-    private hexToRgb(hex: string): { r: number, g: number, b: number } | null {
-    // Remove the leading # if present
-    hex = hex.replace(/^#/, '');
-    // Parse the hex string
-    const bigint = parseInt(hex, 16);
-    if (hex.length === 3) {
-        // If it's a shorthand hex code, expand it
-        return {
-            r: (bigint >> 8) & 0xF | (bigint >> 4) & 0xF0,
-            g: (bigint >> 4) & 0xF | (bigint) & 0xF0,
-            b: (bigint & 0xF) << 4 | (bigint & 0xF)
-        };
-    } else if (hex.length === 6) {
-        return {
-            r: (bigint >> 16) & 0xFF,
-            g: (bigint >> 8) & 0xFF,
-            b: bigint & 0xFF
-        };
-    }
-    return null;
     }
 
     private updateStyles() {
@@ -240,18 +242,41 @@ export class Visual implements IVisual {
 
         // Container background color
         const backgroundColor = this.formattingSettings.backgroundFormatting.backgroundColor.value.value;
-        const transparency = this.formattingSettings.backgroundFormatting.transparency.value;
-        if (backgroundColor && transparency !== undefined) {
-            // Convert the hex color to RGB
-            const rgb = this.hexToRgb(backgroundColor);
-            if (rgb) {
-                // Create the rgba color with transparency
-                const rgbaColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1 - transparency / 100})`;
-                slicerContainer.style.backgroundColor = rgbaColor;
-            }
+        if (backgroundColor) {
+            slicerContainer.style.backgroundColor = backgroundColor;
         }
     }
-  
-    
-    
+
+    private onSlicerChange() {
+        const startDate = this.startDateInput.value;
+        const endDate = this.endDateInput.value;
+
+        if (!startDate || !endDate) {
+            return;
+        }
+
+        const startFilter = {
+            $schema: "https://powerbi.com/product/schema#basic",
+            target: {
+                table: "YourTableName",
+                column: "YourColumnName"
+            },
+            operator: "ge",
+            values: [startDate]
+        };
+
+        const endFilter = {
+            $schema: "https://powerbi.com/product/schema#basic",
+            target: {
+                table: "YourTableName",
+                column: "YourColumnName"
+            },
+            operator: "le",
+            values: [endDate]
+        };
+
+        // Apply the filters
+        this.host.applyJsonFilter(startFilter, "general", "filter", powerbi.FilterAction.merge);
+        this.host.applyJsonFilter(endFilter, "general", "filter", powerbi.FilterAction.merge);
+    }
 }

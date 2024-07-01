@@ -47,7 +47,7 @@ export class dateFormattingCard extends FormattingSettingsCard{
     public fontSize = new formattingSettings.NumUpDown({ 
         name: "fontSize",
         displayName: "Date Font Size",
-        value: 12,
+        value: 18,
         visible: true
     });    
         
@@ -95,7 +95,7 @@ export class relativeDateFormattingCardSettings extends FormattingSettingsCard{
         public fontSize = new formattingSettings.NumUpDown({ 
             name: "fontSize",
             displayName: "Date Font Size",
-            value: 12,
+            value: 16,
             visible: true
         });    
             
@@ -158,9 +158,10 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     public dateFormatting: dateFormattingCard = new dateFormattingCard();
     public relativeDateFormatting: relativeDateFormattingCardSettings = new relativeDateFormattingCardSettings();
 
-    public cards = [
+    public cards  = [
         this.backgroundFormatting,
         this.dateFormatting,
         this.relativeDateFormatting  
       ];
 }
+

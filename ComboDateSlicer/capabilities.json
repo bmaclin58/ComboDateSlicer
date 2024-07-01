@@ -1,109 +1,42 @@
 {
-    "dataRoles": [
-        {
-            "displayName": "Date Slicer 2.0",
-            "name": "date",
-            "kind": "Grouping"
-        }
-    ],
-    "dataViewMappings": [
-        {
-            "categorical": {
-                "categories": {
-                    "for": {
-                        "in": "date"
-                    },
-                    "dataReductionAlgorithm": {
-                        "top": {}
-                    }
-                },
-                "values": {
-                    "select": [
-                        {
-                            "bind": {
-                                "to": "measure"
-                            }
-                        }
-                    ]
-                }
-            }
-        }
-    ],
-    "objects": {
-        "general": {
-            "displayName": "General",
-            "properties": {
-                "startColor": {
-                    "displayName": "Start Date Color",
-                    "type": { "fill": { "solid": { "color": true } } }
-                },
-                "endColor": {
-                    "displayName": "End Date Color",
-                    "type": { "fill": { "solid": { "color": true } } }
-                },
-                "relativeColor": {
-                    "displayName": "Relative Date Color",
-                    "type": { "fill": { "solid": { "color": true } } }
-                },
-                "backgroundColor": {
-                    "displayName": "Background Color",
-                    "type": { "fill": { "solid": { "color": true } } }
-                }
-            }
-        },
-        "configuration": {
-      "displayName": "Configuration",
-      "properties": {
-        "enablePinning": {
-          "displayName": "Enable pinning",
-          "description": "Whether to allow pinning selections as bookmarks",
-          "type": {
-            "bool": true
-          }
-        },
-        "showRelated": {
-          "displayName": "Show Related",
-          "description": "Whether to show related nodes on selection",
-          "type": {
-            "bool": true
-          }
-        },
-        "wrapText": {
-          "displayName": "Wrap Text",
-          "description": "Whether to wrap text or truncate",
-          "type": {
-            "bool": true
-          }
-        },
-        "fontSize": {
-          "displayName": "Text Size",
-          "description": "The size of text throughout the visual",
-          "type": {
-            "formatting": {
-              "fontSize": true
-            }
-          }
-        },
-        "fontColor": {
-          "displayName": "Text Color",
-          "description": "The color of text throughout the visual",
-          "type": {
-            "fill": {
-              "solid": {
-                "color": true
+  "dataRoles": [
+    {
+      "name": "date",
+      "kind": "Grouping",
+      "displayName": "Date"
+    }
+  ],
+  "objects": {
+      "general": {
+          "displayName": "Filtering",
+          "displayNameKey": "filterGeneral",
+          "properties": {
+              "filter": {
+                  "type": {
+                      "filter": true
+                  }
               }
-            }
           }
-        },
-        
-        "transparency": {
+      },
+    "textFormatting": {
+      "displayName": "Text Formatting",
+      "properties": {
+        "fontSize": {
+          "displayName": "Font Size",
           "type": {
             "numeric": true
           }
         },
-        "backgroundColor": {
-          "displayName": "Background Color",
-          "description": "The background color of the visual",
+        "fontFamily": {
+        "displayName": "Font Family",
+        "type": {
+          "formatting": {
+            "fontFamily": true
+          }
+          }
+        },
+        "fontColor": {
+          "displayName": "Font Color",
           "type": {
             "fill": {
               "solid": {
@@ -112,9 +45,125 @@
             }
           }
         }
+      }
+    },
+    "backgroundFormatting": {
+      "displayName": "Background Formatting",
+      "properties": {
+        "backgroundColor": {
+          "displayName": "Background Color",
+          "type": {
+            "fill": {
+              "solid": {
+                "color": true
+              }
+            }
+          }
+        },
+        "Transparency": {
+          "displayName": "Transparency",
+          "type": {
+            "numeric": true
+          }
+        }
+      }
+    },
+         "dateFormatting": {
+              "displayName": "Date Formatting",
+              "properties": {
+              "fontSize": {
+              "displayName": "Font Size",
+              "type": {
+              "numeric": true
+            }
+          },
+          "fontFamily": {
+            "displayName": "Font Family",
+            "type": {
+              "formatting": {
+                "fontFamily": true 
+              }
+            }
+          },
+          "fontColor": {
+            "displayName": "Font Color",  
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "backgroundColor": {
+            "displayName": "Background Color",
+            "type": {  
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          }
+        }
+        },
+    "relativeDateFormatting": {
+          "displayName": "Relative Date Formatting",
+          "properties": {
+            "fontSize": {
+            "displayName": "Font Size",
+            "type": {
+              "numeric": true
+            }
+          },
+          "fontFamily": {
+            "displayName": "Font Family",
+            "type": {
+              "formatting": {
+                "fontFamily": true 
+              }
+            }
+          },
+          "fontColor": {
+            "displayName": "Font Color",  
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "backgroundColor": {
+            "displayName": "Background Color",
+            "type": {  
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          }
+        }
     }
+        
+      },
+  
+  "dataViewMappings": [
+    {
+      "conditions": [
+        { "date": { "max": 1 } }
+      ],
+      "categorical": {
+        "categories": {
+          "for": { "in": "date" },
+          "dataReductionAlgorithm": { "top": {} }
+        }
+      }
     }
-},
+  ],
 
-    "privileges": []
+  "supportsSynchronizingFilterState": true,
+  "privileges": [],
+  "supportsMultiVisualSelection": true
 }

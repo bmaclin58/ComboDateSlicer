@@ -29,35 +29,28 @@ import powerbi from "powerbi-visuals-api";
 import IVisual = powerbi.extensibility.visual.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-import DataViewObjects = powerbi.DataViewObjects;
+import { VisualFormattingSettingsModel } from "./settings";
+import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
+import { interactivitySelectionService } from "powerbi-visuals-utils-interactivityutils";
+
+import "./../style/visual.less";
 
 export class Visual implements IVisual {
-    private target: HTMLElement;
-    private startDateInput: HTMLInputElement;
-    private endDateInput: HTMLInputElement;
-    private dateRangeSlider: HTMLInputElement;
-    private relativeDateSelect: HTMLSelectElement;
+    public target: HTMLElement;
+    public startDateInput: HTMLInputElement;
+    public endDateInput: HTMLInputElement;
+    public relativeDateSelect: HTMLSelectElement;
+
+    public formattingSettings: VisualFormattingSettingsModel;
+    public formattingSettingsService: FormattingSettingsService;
+
+    //public dateInputs : HTMLInputElement;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
+        this.formattingSettingsService = new FormattingSettingsService();
+
         this.target.innerHTML = `
-            <style>
-                #slicer-container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100%;
-                }
-                #date-inputs {
-                    display: flex;
-                    justify-content: center;
-                    margin-bottom: 10px;
-                }
-                #date-inputs input {
-                    margin: 0 5px;
-                }
-            </style>
             <div id="slicer-container">
                 <div id="date-inputs">
                     <input type="date" id="startDate" />
@@ -73,58 +66,39 @@ export class Visual implements IVisual {
                 </select>
             </div>
         `;
-    
+
+        //this.dateInputs = document.getElementById("date-inputs") as HTMLInputElement;
         this.startDateInput = document.getElementById("startDate") as HTMLInputElement;
         this.endDateInput = document.getElementById("endDate") as HTMLInputElement;
         this.relativeDateSelect = document.getElementById("relativeDate") as HTMLSelectElement;
-    
+        
+
         this.startDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.endDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.relativeDateSelect.addEventListener("change", this.updateRelativeDate.bind(this));
-    
-
-        /*
-        Throwing out the slider.  I don't think it's necessary or helpful. But ill keep the code here in case we want it back.
-        this.dateRangeSlider = document.getElementById("dateRangeSlider") as HTMLInputElement;
-                      <div id="slider-container">
-        <input type="range" id="dateRangeSlider" min="1" max="365" value="30" />
-        </div>
-        this.dateRangeSlider.addEventListener("input", this.updateSlider.bind(this)); 
-
-        private updateSlider() {
-        const sliderValue = parseInt(this.dateRangeSlider.value, 10);
-        const startDateTimestamp = parseInt(this.dateRangeSlider.min, 10);
-        const endDateTimestamp = parseInt(this.dateRangeSlider.max, 10);
-
-        const range = endDateTimestamp - startDateTimestamp;
-        const newEndDateTimestamp = startDateTimestamp + (range * (sliderValue / 100));
-        const newEndDate = new Date(newEndDateTimestamp);
-
-        this.endDateInput.value = newEndDate.toISOString().split('T')[0];
-        console.log(`Slider Value: ${sliderValue}`);
-        this.updateDateRange();
-    }
-        */
+        
     }
 
-    public update(options: VisualUpdateOptions): void {
+    public update(options: VisualUpdateOptions) {
         if (!options || !options.dataViews || options.dataViews.length === 0) {
             return;
         }
-    
+
         const dataView = options.dataViews[0];
+        this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, dataView);
+
         const categories = dataView.categorical.categories[0];
-    
+
         if (categories && categories.values && categories.values.length > 0) {
             const dateValues = categories.values
                 .map(value => new Date(value as string))
                 .filter(date => !isNaN(date.getTime()));
-    
+
             if (dateValues.length > 0) {
                 const dateTimestamps = dateValues.map(value => value.getTime());
                 const minDate = new Date(Math.min(...dateTimestamps));
                 const maxDate = new Date(Math.max(...dateTimestamps));
-    
+
                 this.startDateInput.value = minDate.toISOString().split('T')[0];
                 this.endDateInput.value = maxDate.toISOString().split('T')[0];
             } else {
@@ -133,43 +107,23 @@ export class Visual implements IVisual {
         } else {
             this.setDefaultDates();
         }
-        const settings = dataView.metadata.objects || {};
-        const slicerContainer = document.getElementById("slicer-container");
-    
-        const getColor = (fill: powerbi.Fill) => (fill && fill.solid ? fill.solid.color : null);
-    
-        const textColor = settings.general && settings.general.textColor ? getColor(settings.general.textColor as powerbi.Fill) : null;
-        const fontSize = settings.general && settings.general.fontSize ? `${settings.general.fontSize}px` : null;
-        const backgroundColor = settings.general && settings.general.backgroundColor ? getColor(settings.general.backgroundColor as powerbi.Fill) : null;
-        const transparency = settings.general && settings.general.transparency && typeof settings.general.transparency === "number" ? settings.general.transparency : 0;
-    
-        if (textColor) {
-            this.startDateInput.style.color = textColor;
-            this.endDateInput.style.color = textColor;
-            this.relativeDateSelect.style.color = textColor;
-        }
-        if (fontSize) {
-            this.startDateInput.style.fontSize = fontSize;
-            this.endDateInput.style.fontSize = fontSize;
-            this.relativeDateSelect.style.fontSize = fontSize;
-        }
-        if (backgroundColor) {
-            slicerContainer.style.backgroundColor = backgroundColor;
-            slicerContainer.style.opacity = ((100 - transparency) / 100).toString();
-        }
+
+        this.updateStyles();
+    }
+
+    public getFormattingModel(): powerbi.visuals.FormattingModel {
+        return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
     }
 
     private updateDateRange() {
         const startDate = new Date(this.startDateInput.value);
         const endDate = new Date(this.endDateInput.value);
-    
+
         if (endDate < startDate) {
-            // If the end date is before the start date, set the end date to the start date
             this.endDateInput.value = this.startDateInput.value;
         }
-    
+
         console.log(`Date Range: ${this.startDateInput.value} - ${this.endDateInput.value}`);
-        // Update visual with new date range logic
     }
 
     private updateRelativeDate() {
@@ -209,12 +163,95 @@ export class Visual implements IVisual {
 
         this.updateDateRange();
     }
-    
+
     private setDefaultDates() {
         const today = new Date();
         this.startDateInput.value = today.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
     }
+    // Utility function to convert hex color to RGB
+    private hexToRgb(hex: string): { r: number, g: number, b: number } | null {
+    // Remove the leading # if present
+    hex = hex.replace(/^#/, '');
+    // Parse the hex string
+    const bigint = parseInt(hex, 16);
+    if (hex.length === 3) {
+        // If it's a shorthand hex code, expand it
+        return {
+            r: (bigint >> 8) & 0xF | (bigint >> 4) & 0xF0,
+            g: (bigint >> 4) & 0xF | (bigint) & 0xF0,
+            b: (bigint & 0xF) << 4 | (bigint & 0xF)
+        };
+    } else if (hex.length === 6) {
+        return {
+            r: (bigint >> 16) & 0xFF,
+            g: (bigint >> 8) & 0xFF,
+            b: bigint & 0xFF
+        };
+    }
+    return null;
+    }
 
+    private updateStyles() {
+        const slicerContainer = document.getElementById("slicer-container");
+
+        // Start date input formatting
+        const dateFontSize = `${this.formattingSettings.dateFormatting.fontSize.value}px`;
+        const dateFontFamily = this.formattingSettings.dateFormatting.fontFamily.value;
+        const dateColor = this.formattingSettings.dateFormatting.fontColor.value.value;
+        const dateBackgroundColor = this.formattingSettings.dateFormatting.backgroundColor.value.value;
+
+        if (dateColor) {
+            this.startDateInput.style.color = dateColor;
+            this.endDateInput.style.color = dateColor;
+         
+        }
+        if (dateFontSize) {
+            this.startDateInput.style.fontSize = dateFontSize;
+            this.endDateInput.style.fontSize = dateFontSize;
+        }
+        if (dateFontFamily) {
+            this.startDateInput.style.fontFamily = dateFontFamily;
+            this.endDateInput.style.fontFamily = dateFontFamily;
+        }
+        if (dateBackgroundColor) {
+            this.startDateInput.style.backgroundColor = dateBackgroundColor;
+            this.endDateInput.style.backgroundColor = dateBackgroundColor;
+        }
+
+        // Relative date select formatting
+        const relativeDateFontSize = `${this.formattingSettings.relativeDateFormatting.fontSize.value}px`;
+        const relativeDateFontFamily = this.formattingSettings.relativeDateFormatting.fontFamily.value;
+        const relativeDateColor = this.formattingSettings.relativeDateFormatting.fontColor.value.value;
+        const relativeDateBackgroundColor = this.formattingSettings.relativeDateFormatting.backgroundColor.value.value;
+
+        if (relativeDateColor) {
+            this.relativeDateSelect.style.color = relativeDateColor;
+        }
+        if (relativeDateFontSize) {
+            this.relativeDateSelect.style.fontSize = relativeDateFontSize;
+        }
+        if (relativeDateFontFamily) {
+            this.relativeDateSelect.style.fontFamily = relativeDateFontFamily;
+        }
+        if (relativeDateBackgroundColor) {
+            this.relativeDateSelect.style.backgroundColor = relativeDateBackgroundColor;
+        }
+
+        // Container background color
+        const backgroundColor = this.formattingSettings.backgroundFormatting.backgroundColor.value.value;
+        const transparency = this.formattingSettings.backgroundFormatting.transparency.value;
+        if (backgroundColor && transparency !== undefined) {
+            // Convert the hex color to RGB
+            const rgb = this.hexToRgb(backgroundColor);
+            if (rgb) {
+                // Create the rgba color with transparency
+                const rgbaColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1 - transparency / 100})`;
+                slicerContainer.style.backgroundColor = rgbaColor;
+            }
+        }
+    }
+  
+    
     
 }
