@@ -18,5 +18,6 @@ export declare class Visual implements IVisual {
     private updateDateRange;
     private updateRelativeDate;
     private setDefaultDates;
+    private hexToRgb;
     private updateStyles;
 }

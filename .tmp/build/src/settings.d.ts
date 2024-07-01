@@ -36,6 +36,7 @@ export declare class relativeDateFormattingCardSettings extends FormattingSettin
  */
 export declare class backgroundFormattingCard extends FormattingSettingsCard {
     backgroundColor: formattingSettings.ColorPicker;
+    transparency: formattingSettings.NumUpDown;
     name: string;
     displayName: string;
     visible: boolean;

@@ -136,10 +136,16 @@ export class backgroundFormattingCard extends FormattingSettingsCard {
         value: { value: "#FFFFFF" }
     });
 
+    transparency = new formattingSettings.NumUpDown({
+        name: "Transparency",
+        displayName: "Transparency",
+        value: 0
+    });
+
     public name: string = "backgroundFormatting";
     public displayName: string = "Background Formatting";
     public visible: boolean = true;
-    public slices:  FormattingSettingsSlice[] = [this.backgroundColor];
+    public slices:  FormattingSettingsSlice[] = [this.backgroundColor, this.transparency];
 }
 
 /**

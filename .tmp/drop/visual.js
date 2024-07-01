@@ -128,10 +128,15 @@ class backgroundFormattingCard extends FormattingSettingsCard {
         displayName: "Background Color",
         value: { value: "#FFFFFF" }
     });
+    transparency = new powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.NumUpDown */ .z.iB({
+        name: "Transparency",
+        displayName: "Transparency",
+        value: 0
+    });
     name = "backgroundFormatting";
     displayName = "Background Formatting";
     visible = true;
-    slices = [this.backgroundColor];
+    slices = [this.backgroundColor, this.transparency];
 }
 /**
 * Visual settings model class
@@ -301,6 +306,29 @@ class Visual {
         this.startDateInput.value = today.toISOString().split('T')[0];
         this.endDateInput.value = today.toISOString().split('T')[0];
     }
+    // Utility function to convert hex color to RGB
+    hexToRgb(hex) {
+        // Remove the leading # if present
+        hex = hex.replace(/^#/, '');
+        // Parse the hex string
+        const bigint = parseInt(hex, 16);
+        if (hex.length === 3) {
+            // If it's a shorthand hex code, expand it
+            return {
+                r: (bigint >> 8) & 0xF | (bigint >> 4) & 0xF0,
+                g: (bigint >> 4) & 0xF | (bigint) & 0xF0,
+                b: (bigint & 0xF) << 4 | (bigint & 0xF)
+            };
+        }
+        else if (hex.length === 6) {
+            return {
+                r: (bigint >> 16) & 0xFF,
+                g: (bigint >> 8) & 0xFF,
+                b: bigint & 0xFF
+            };
+        }
+        return null;
+    }
     updateStyles() {
         const slicerContainer = document.getElementById("slicer-container");
         // Start date input formatting
@@ -343,8 +371,15 @@ class Visual {
         }
         // Container background color
         const backgroundColor = this.formattingSettings.backgroundFormatting.backgroundColor.value.value;
-        if (backgroundColor) {
-            slicerContainer.style.backgroundColor = backgroundColor;
+        const transparency = this.formattingSettings.backgroundFormatting.transparency.value;
+        if (backgroundColor && transparency !== undefined) {
+            // Convert the hex color to RGB
+            const rgb = this.hexToRgb(backgroundColor);
+            if (rgb) {
+                // Create the rgba color with transparency
+                const rgbaColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1 - transparency / 100})`;
+                slicerContainer.style.backgroundColor = rgbaColor;
+            }
         }
     }
 }
