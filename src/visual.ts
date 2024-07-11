@@ -25,6 +25,7 @@
 */
 "use strict";
 
+import { AdvancedFilter } from "powerbi-models";
 import powerbi from "powerbi-visuals-api";
 import IVisual = powerbi.extensibility.visual.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
@@ -51,11 +52,7 @@ export class Visual implements IVisual {
 
     public formattingSettings: VisualFormattingSettingsModel;
     public formattingSettingsService: FormattingSettingsService;
-
-    private tableName: string;
-    private columnName: string;
-
-    //public dateInputs : HTMLInputElement;
+    public options: VisualUpdateOptions;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -63,8 +60,6 @@ export class Visual implements IVisual {
 
         this.formattingSettingsService = new FormattingSettingsService();
         this.formattingSettings = new VisualFormattingSettingsModel();
-
-
 
         this.target.innerHTML = `
             <div id="slicer-container">
@@ -88,51 +83,56 @@ export class Visual implements IVisual {
         this.endDateInput = document.getElementById("endDate") as HTMLInputElement;
         this.relativeDateSelect = document.getElementById("relativeDate") as HTMLSelectElement;
         
-
         this.startDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.endDateInput.addEventListener("change", this.updateDateRange.bind(this));
         this.relativeDateSelect.addEventListener("change", this.updateRelativeDate.bind(this));
-
-        
+    
         // Add an event listener for slicer changes
         this.startDateInput.addEventListener("change", () => this.onSlicerChange());
         this.endDateInput.addEventListener("change", () => this.onSlicerChange());
         this.relativeDateSelect.addEventListener("change", () => this.updateRelativeDate());
-
-
     }
 
     public update(options: VisualUpdateOptions) {
         if (!options || !options.dataViews || options.dataViews.length === 0) {
-            return;
+          return;
         }
-
+    
+        this.options = options;
         const dataView = options.dataViews[0];
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, dataView);
-
+    
         const categories = dataView.categorical.categories[0];
-
+        const jsonFilters = options?.jsonFilters || []; //Applied Filters get saved here
+        const filterApplied = jsonFilters.length !== 0;
         if (categories && categories.values && categories.values.length > 0) {
-            const dateValues = categories.values
-                .map(value => new Date(value as string))
-                .filter(date => !isNaN(date.getTime()));
-
-            if (dateValues.length > 0) {
-                const dateTimestamps = dateValues.map(value => value.getTime());
-                const minDate = new Date(Math.min(...dateTimestamps));
-                const maxDate = new Date(Math.max(...dateTimestamps));
-
-                this.startDateInput.value = minDate.toISOString().split('T')[0];
-                this.endDateInput.value = maxDate.toISOString().split('T')[0];
-            } else {
-                this.setDefaultDates();
-            }
-        } else {
+          const dateValues = categories.values.map((value) => new Date(value as string)).filter((date) => !isNaN(date.getTime()));
+    
+          //If filters applied, then fetch the relevant dates
+          if (filterApplied) {
+            const appliedFilters = jsonFilters[0];
+            const minDate = new Date(appliedFilters["conditions"][0].value);
+            const maxDate = new Date(appliedFilters["conditions"][1].value);
+            console.log(`Filter Applied between ${minDate.toDateString()} & ${maxDate.toDateString()}`);
+    
+            this.startDateInput.value = minDate.toISOString().split("T")[0];
+            this.endDateInput.value = maxDate.toISOString().split("T")[0];
+          } else if (dateValues.length > 0) {
+            const dateTimestamps = dateValues.map((value) => value.getTime());
+            const minDate = new Date(Math.min(...dateTimestamps));
+            const maxDate = new Date(Math.max(...dateTimestamps));
+    
+            this.startDateInput.value = minDate.toISOString().split("T")[0];
+            this.endDateInput.value = maxDate.toISOString().split("T")[0];
+          } else {
             this.setDefaultDates();
+          }
+        } else {
+          this.setDefaultDates();
         }
-
+    
         this.updateStyles();
-    }
+      }
 
     public getFormattingModel(): powerbi.visuals.FormattingModel {
         return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
@@ -185,7 +185,7 @@ export class Visual implements IVisual {
         this.endDateInput.value = today.toISOString().split('T')[0];
         
         this.updateDateRange();
-        //this.onSlicerChange();
+        this.onSlicerChange();
     }
 
     private setDefaultDates() {
@@ -247,36 +247,41 @@ export class Visual implements IVisual {
         }
     }
 
-    private onSlicerChange() {
-        const startDate = this.startDateInput.value;
-        const endDate = this.endDateInput.value;
+  private onSlicerChange() {
+    const startDateValue = this.startDateInput.value;
+    const endDateValue = this.endDateInput.value;
 
-        if (!startDate || !endDate) {
-            return;
-        }
-
-        const startFilter = {
-            $schema: "https://powerbi.com/product/schema#basic",
-            target: {
-                table: "YourTableName",
-                column: "YourColumnName"
-            },
-            operator: "ge",
-            values: [startDate]
-        };
-
-        const endFilter = {
-            $schema: "https://powerbi.com/product/schema#basic",
-            target: {
-                table: "YourTableName",
-                column: "YourColumnName"
-            },
-            operator: "le",
-            values: [endDate]
-        };
-
-        // Apply the filters
-        this.host.applyJsonFilter(startFilter, "general", "filter", powerbi.FilterAction.merge);
-        this.host.applyJsonFilter(endFilter, "general", "filter", powerbi.FilterAction.merge);
+    if (!startDateValue || !endDateValue) {
+      return;
     }
+
+    const dateCategory = this.options.dataViews[0].categorical.categories[0];
+    const table = dateCategory.source.queryName.substr(0, dateCategory.source.queryName.indexOf("."));
+    const column = dateCategory.source.queryName.split(".").pop();
+
+    const target = {
+      table,
+      column,
+    };
+    const startDate = new Date(startDateValue);
+    const endDate = new Date(endDateValue);
+    const filter = {
+      $schema: "https://powerbi.com/product/schema#advanced",
+      target: target,
+      logicalOperator: "And",
+      conditions: [
+        {
+          operator: "GreaterThanOrEqual",
+          value: startDate,
+        },
+        {
+          operator: "LessThanOrEqual",
+          value: endDate,
+        },
+      ],
+      filterType: AdvancedFilter,
+    };
+
+    this.host.applyJsonFilter(filter, "general", "filter", powerbi.FilterAction.merge);
+  }
 }

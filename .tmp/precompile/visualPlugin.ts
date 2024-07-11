@@ -7,7 +7,7 @@ var powerbiKey: any = "powerbi";
 var powerbi: any = window[powerbiKey];
 var comboDateSlicer821CCC76721D44A48063DFEA0FA72849_DEBUG: IVisualPlugin = {
     name: 'comboDateSlicer821CCC76721D44A48063DFEA0FA72849_DEBUG',
-    displayName: 'ComboDateSlicer',
+    displayName: 'Combo Date Slicer',
     class: 'Visual',
     apiVersion: '5.3.0',
     create: (options?: VisualConstructorOptions) => {

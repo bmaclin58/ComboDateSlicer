@@ -1,18 +1,18 @@
 {
     "visual": {
         "name": "comboDateSlicer",
-        "displayName": "ComboDateSlicer",
+        "displayName": "Combo Date Slicer",
         "guid": "comboDateSlicer821CCC76721D44A48063DFEA0FA72849",
         "visualClassName": "Visual",
         "version": "1.0.0.0",
-        "description": "A visual combining a date slider and a relative date slicer",
-        "supportUrl": "",
+        "description": "A visual slicer combining the relative date and between dates",
+        "supportUrl": "hirebrianmaclin.com",
         "gitHubUrl": ""
     },
     "apiVersion": "5.3.0",
     "author": {
-        "name": "",
-        "email": ""
+        "name": "Brian Maclin",
+        "email": "bmaclin58@gmail.com"
     },
     "assets": {
         "icon": "assets/icon.png"

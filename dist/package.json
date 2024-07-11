@@ -1,0 +1,17 @@
+{
+		"version": "1.0.0.0",
+		"author": {"name":"Brian Maclin","email":"bmaclin58@gmail.com"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/comboDateSlicer821CCC76721D44A48063DFEA0FA72849.pbiviz.json"
+			}
+		],
+		"visual": {"name":"comboDateSlicer","displayName":"Combo Date Slicer","guid":"comboDateSlicer821CCC76721D44A48063DFEA0FA72849","visualClassName":"Visual","version":"1.0.0.0","description":"A visual slicer combining the relative date and between dates","supportUrl":"hirebrianmaclin.com","gitHubUrl":""},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}
